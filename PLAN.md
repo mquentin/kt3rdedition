@@ -4,6 +4,16 @@ Source pattern: `https://kt.wargamebuilder.com/fr/killteam/view/[ID]`
 
 ---
 
+## Non-negotiable constraints
+
+**1. Fits on one A4 landscape page when printed.**
+Every layout, font size, and spacing decision must serve this goal. If content overflows, reduce padding, font size, or restructure the layout — never remove gameplay-relevant content.
+
+**2. Exact wording from the source.**
+Every rule, ability, ploy, and equipment description must be copied verbatim from kt.wargamebuilder.com. Do not paraphrase, summarise, or rewrite. Bold tags may be added on terms already emphasised in the source. No other editorial changes.
+
+---
+
 ## Step 1 — Fetch the page
 
 Use the Agent tool (general-purpose) to fetch the URL and extract **all visible text verbatim**:
