@@ -105,7 +105,9 @@ Light theme:
 
 ---
 
-## Step 5 — Print (landscape)
+## Step 5 — Print (landscape, single page)
+
+The goal is to fit the entire faction on **one A4 landscape page**.
 
 Add at the end of the `<style>` block:
 
@@ -114,13 +116,41 @@ Add at the end of the `<style>` block:
 
 @media print {
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  body { font-size: 9px; background: #fff; }
-  .page { padding: 6px 0 0; max-width: 100%; }
-  /* Tighter spacing on all text elements */
-  /* Operatives grid: repeat(4, 1fr) */
-  /* Equipment grid: repeat(4, 1fr) */
-  /* break-inside: avoid on .op, .ploy-item, .eq, .rule-cell */
+  body { font-size: 7.5px; background: #fff; }
+  .page { padding: 4px 0 0; max-width: 100%; }
 }
+```
+
+### Layout changes in print
+
+| Section | Screen layout | Print layout |
+|---|---|---|
+| Header | full padding | 4px padding, h1 13px |
+| Top row | 1fr / 1.6fr | same, gap 6px |
+| Ploys | 2 cols, 4 items stacked each | 2 cols, **each list becomes 2×2 grid** |
+| Operatives | auto-fill ~340px | **repeat(4, 1fr)** |
+| Equipment | auto-fill ~240px | **repeat(4, 1fr)** |
+
+The critical trick for fitting vertically is the **ploy 2×2 grid**:
+```css
+.ploy-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
+```
+This halves the ploy section height (2 rows instead of 4 per group).
+
+### Font and spacing targets
+
+| Element | Print size |
+|---|---|
+| Body base | 7.5px |
+| Ploy / ability text | 7px |
+| Weapon table | 7.5px |
+| Table headers | 6.5px |
+| Labels (stat bar, badges) | 6–6.5px |
+| All padding | 1–4px |
+
+### Break rules
+```css
+.op, .ploy-item, .eq, .rule-cell { break-inside: avoid; }
 ```
 
 ---
