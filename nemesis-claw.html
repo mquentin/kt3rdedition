@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Griffe Némésis — Kill Team</title>
+  <style>
+    :root {
+      --bg:       #f4f2ee;
+      --bg2:      #ffffff;
+      --bg3:      #eeece8;
+      --border:   #d4d0cb;
+      --text:     #1c1a16;
+      --dim:      #6a6258;
+      --accent:   #2e1a5e;
+      --accent2:  #5c3a96;
+      --blue:     #1a3464;
+      --blue-bg:  #e6ecf6;
+      --blue-bdr: #9ab0d8;
+      --red:      #6e1a1a;
+      --red-bg:   #f6e6e6;
+      --red-bdr:  #d89a9a;
+      --gold:     #6a4e08;
+      --gold-bg:  #fdf4dc;
+      --gold-bdr: #c8a020;
+      --melee:    #7a2020;
+      --ranged:   #1a3a6a;
+      --green:    #1a4a2a;
+      --green-bg: #e6f4ea;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-bottom: 3px solid var(--accent2);
+    }
+    header h1 { font-size: 22px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; line-height: 1; }
+    .header-sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-top: 2px; }
+    .header-tags { margin-left: auto; display: flex; gap: 5px; flex-wrap: wrap; }
+    .tag { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; background: rgba(255,255,255,0.1); color: #fff; padding: 2px 7px; border: 1px solid rgba(255,255,255,0.2); }
+
+    /* ── PAGE ── */
+    .page { max-width: 1400px; margin: 0 auto; padding: 14px 14px 40px; }
+
+    /* ── SECTION TITLE ── */
+    .sec-title {
+      font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent); border-bottom: 2px solid var(--accent);
+      padding-bottom: 3px; margin-bottom: 8px;
+    }
+    .section { margin-bottom: 14px; }
+
+    /* ── TOP ROW: Composition + Faction Rules ── */
+    .top-row { display: grid; grid-template-columns: 1fr 1.6fr; gap: 12px; margin-bottom: 14px; }
+    @media (max-width: 750px) { .top-row { grid-template-columns: 1fr; } }
+
+    .box { background: var(--bg2); border: 1px solid var(--border); }
+    .box-title {
+      font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); background: var(--bg3); border-bottom: 1px solid var(--border);
+      padding: 5px 10px;
+    }
+    .box-body { padding: 9px 10px; font-size: 11.5px; line-height: 1.55; }
+    .box-body b { color: var(--accent); }
+
+    .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+    .rule-cell { background: var(--bg2); padding: 9px 10px; }
+    .rule-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+    .rule-cell p { font-size: 11px; color: var(--text); line-height: 1.5; padding-left: 10px; }
+
+    /* ── PLOYS ── */
+    .ploys-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    @media (max-width: 700px) { .ploys-row { grid-template-columns: 1fr; } }
+
+    .ploy-group { }
+    .ploy-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+
+    .ploy-item { background: var(--bg2); display: grid; grid-template-columns: 44px 1fr; }
+    .ploy-item.strat .ploy-pip { background: var(--blue-bg); border-right: 3px solid var(--blue); }
+    .ploy-item.fight .ploy-pip { background: var(--red-bg);  border-right: 3px solid var(--red); }
+
+    .ploy-pip {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 6px 4px;
+    }
+    .pip-cost { font-size: 13px; font-weight: 900; line-height: 1; }
+    .ploy-item.strat .pip-cost { color: var(--blue); }
+    .ploy-item.fight .pip-cost { color: var(--red); }
+    .pip-label { font-size: 7px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); margin-top: 1px; }
+
+    .ploy-text { padding: 6px 9px; }
+    .ploy-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); margin-bottom: 3px; }
+    .ploy-text p { font-size: 11px; color: var(--dim); line-height: 1.45; padding-left: 10px; }
+    .ploy-text p b { color: var(--text); }
+
+    .ploy-group-title {
+      font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      padding: 5px 8px; border-bottom: 1px solid var(--border);
+    }
+    .strat-title { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-bdr); }
+    .fight-title { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bdr); }
+
+    /* ── OPERATIVES ── */
+    .ops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 10px; }
+
+    .op { background: var(--bg2); border: 1px solid var(--border); }
+    .op.leader { border-color: var(--gold-bdr); }
+
+    .op-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 9px; background: var(--bg3); border-bottom: 1px solid var(--border);
+    }
+    .op.leader .op-head { background: var(--gold-bg); border-bottom-color: var(--gold-bdr); }
+
+    .op-name { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
+    .op.leader .op-name { color: var(--gold); }
+
+    .op-meta { display: flex; gap: 6px; align-items: center; }
+    .leader-badge {
+      font-size: 8px; letter-spacing: 1px; text-transform: uppercase;
+      background: var(--gold-bg); color: var(--gold);
+      padding: 1px 5px; border: 1px solid var(--gold-bdr);
+    }
+
+    .stat-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+    .sc { background: var(--bg2); text-align: center; padding: 4px 2px; }
+    .sl { font-size: 7.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); display: block; }
+    .sv { font-size: 14px; font-weight: 800; color: var(--accent); display: block; line-height: 1.1; }
+
+    /* Weapons */
+    table.wt { width: 100%; border-collapse: collapse; font-size: 10.5px; border-bottom: 1px solid var(--border); }
+    table.wt th {
+      font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim);
+      font-weight: 600; text-align: left; padding: 3px 7px 2px;
+      background: var(--bg3); border-bottom: 1px solid var(--border);
+    }
+    table.wt th:not(:first-child) { text-align: center; }
+    table.wt td { padding: 3px 7px; border-bottom: 1px solid #edeae5; vertical-align: top; }
+    table.wt tr:last-child td { border-bottom: none; }
+    table.wt td:not(:first-child) { text-align: center; }
+
+    .wn { font-weight: 600; }
+    .wr { font-size: 10px; color: var(--dim); font-style: italic; }
+    .rt { display: inline-block; font-size: 7.5px; font-weight: 700; padding: 0 3px; margin-left: 3px; vertical-align: middle; }
+    .rt-r { color: var(--ranged); background: var(--blue-bg); }
+    .rt-m { color: var(--melee); background: var(--red-bg); }
+
+    /* Abilities */
+    .abilities { padding: 7px 9px; display: flex; flex-direction: column; gap: 5px; }
+    .ab { }
+    .ab-head { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+    .ab-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent2); }
+    .ab-cost {
+      font-size: 8px; font-weight: 700; background: #ede6f7; color: var(--accent);
+      padding: 0 5px; border: 1px solid var(--accent2); white-space: nowrap;
+    }
+    .ab-tag {
+      font-size: 8px; font-weight: 700; background: var(--green-bg); color: var(--green);
+      padding: 0 5px; border: 1px solid #7ab890; white-space: nowrap;
+    }
+    .ab p { font-size: 11px; color: var(--dim); line-height: 1.45; padding-left: 10px; }
+    .ab p b { color: var(--text); }
+    .ab ul { margin: 3px 0 0 10px; padding-left: 12px; }
+    .ab ul li { font-size: 11px; color: var(--dim); line-height: 1.5; }
+
+    /* Keywords */
+    .keywords { display: none; }
+
+    /* ── EQUIPMENT ── */
+    .equip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); }
+    .eq { background: var(--bg2); padding: 9px 10px; border-top: 3px solid var(--gold-bdr); }
+    .eq-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .eq p { font-size: 11px; color: var(--dim); line-height: 1.5; padding-left: 10px; }
+    .eq p b { color: var(--text); }
+
+    footer { text-align: center; padding: 12px; color: var(--dim); font-size: 10px; border-top: 1px solid var(--border); letter-spacing: 1px; }
+
+    /* ── PRINT ── */
+    @page { size: landscape; margin: 8mm 8mm; }
+
+    @media print {
+      body { font-size: 9px; background: #fff; }
+
+      header { padding: 6px 12px; border-bottom: 2px solid var(--accent2); }
+      header h1 { font-size: 16px; }
+      .header-sub { font-size: 8px; }
+
+      .page { padding: 6px 0 0; max-width: 100%; }
+
+      .top-row { grid-template-columns: 1fr 1.6fr; margin-bottom: 6px; }
+      .section { margin-bottom: 8px; }
+      .ploys-row { margin-bottom: 8px; }
+
+      /* Keep backgrounds and borders for print readability */
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+      /* Tighter spacing */
+      .box-body { padding: 5px 7px; font-size: 9px; }
+      .rule-cell { padding: 5px 7px; }
+      .rule-cell p { font-size: 9px; }
+      .ploy-text { padding: 4px 7px; }
+      .ploy-text p { font-size: 9px; }
+      .ploy-name { font-size: 8px; }
+      .pip-cost { font-size: 11px; }
+
+      /* Operatives grid: 4 columns in landscape */
+      .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+      .op-name { font-size: 8.5px; }
+      .stat-bar { }
+      .sl { font-size: 6.5px; }
+      .sv { font-size: 11px; }
+      table.wt { font-size: 8.5px; }
+      table.wt th { font-size: 7px; padding: 2px 5px 1px; }
+      table.wt td { padding: 2px 5px; }
+      .wr { font-size: 8px; }
+      .abilities { padding: 5px 7px; gap: 3px; }
+      .ab-name { font-size: 8px; }
+      .ab p { font-size: 9px; padding-left: 8px; }
+      .ab ul { margin-left: 8px; }
+      .ab ul li { font-size: 9px; }
+      .ab-cost, .ab-tag { font-size: 7px; }
+
+      /* Equipment: 4 columns */
+      .equip-grid { grid-template-columns: repeat(4, 1fr); }
+      .eq { padding: 6px 8px; }
+      .eq-name { font-size: 8.5px; }
+      .eq p { font-size: 9px; }
+
+      footer { padding: 6px; font-size: 8px; }
+
+      /* Avoid breaking cards across pages */
+      .op { break-inside: avoid; }
+      .ploy-item { break-inside: avoid; }
+      .eq { break-inside: avoid; }
+      .rule-cell { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Griffe Némésis</h1>
+    <div class="header-sub">Kill Team 2024 · Recherche et destruction / Infiltration</div>
+  </div>
+  <div class="header-tags">
+    <span class="tag">Chaos</span>
+    <span class="tag">Hereticus Astartes</span>
+    <span class="tag">Night Lords</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- Composition + Faction Rules -->
+  <div class="top-row">
+
+    <div class="box">
+      <div class="box-title">Composition</div>
+      <div class="box-body">
+        <b>1 Visionnaire</b> (chef) + <b>5 agents</b> choisis parmi :<br>
+        Épouvanteur · Tireur · Tireur Lourd · Crisseur · Volepeau · Ventrilokar · Guerrier<br><br>
+        Hormis les agents <b>Guerrier</b>, votre kill team ne peut inclure chacun des agents de cette liste qu'une seule fois.
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-title">Règles de Faction</div>
+      <div class="rules-grid">
+        <div class="rule-cell">
+          <div class="rule-name">Drapé de nuit</div>
+          <p>Quand un agent ennemi tire sur un agent GRIFFE NÉMÉSIS ami, cet agent ami est masqué si les deux critères suivants se vérifient : il est à plus de 8" des agents ennemis dont il est visible ; il a un terrain Lourd à portée de contrôle, ou n'importe quelle partie de son socle est sous un terrain de type Promontoire.</p>
+        </div>
+        <div class="rule-cell">
+          <div class="rule-name">Astartes</div>
+          <p>À chaque activation d'agent GRIFFE NÉMÉSIS ami, il peut effectuer soit deux actions Tirer, soit deux actions Combattre. S'il s'agit de deux actions Tirer, vous devez choisir un pistolet bolter, un bolter ou un pistolet bolter à lunette pour au moins l'une d'elles.<br>Chaque agent GRIFFE NÉMÉSIS ami peut contre-attaquer quel que soit son ordre.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Ploys -->
+  <div class="section">
+    <div class="ploys-row">
+
+      <div class="ploy-group">
+        <div class="ploy-group-title strat-title">Subterfuges Stratégiques</div>
+        <div class="ploy-list">
+
+          <div class="ploy-item strat">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Retour aux Ténèbres</div>
+              <p>1 agent GRIFFE NÉMÉSIS ami peut immédiatement effectuer une action Battre en Retraite ou de Repositionnement gratuite, mais il doit finir ce mouvement avec un terrain Lourd à sa portée de contrôle, ou avec n'importe quelle partie de son socle sous un terrain de type Promontoire. De plus, il ne peut pas se déplacer de plus de <b>4"</b> pendant cette action et il ne peut pas finir ce mouvement en se trouvant plus près qu'il ne l'était des agents ennemis.</p>
+            </div>
+          </div>
+
+          <div class="ploy-item strat">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Nous sommes venus vous prendre</div>
+              <p>Quand un agent GRIFFE NÉMÉSIS ami est activé, si la première action qu'il effectue pendant cette activation est l'action Charger, quand il finit son déplacement à cette action, vous pouvez infliger <b>D3 dégâts</b> à un agent ennemi à sa portée de contrôle.</p>
+            </div>
+          </div>
+
+          <div class="ploy-item strat">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Thermographe</div>
+              <p>Quand vous choisissez une cible éligible pour un agent GRIFFE NÉMÉSIS ami, les agents ennemis à <b>6"</b> de lui ne peuvent pas utiliser le terrain Léger comme couvert. Bien que cela puisse permettre de cibler de tels agents (à condition qu'ils soient visibles), cela ne les prive pas de leur sauvegarde de couvert (le cas échéant).</p>
+            </div>
+          </div>
+
+          <div class="ploy-item strat">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">La chasse noire</div>
+              <p>Quand un agent GRIFFE NÉMÉSIS ami tire sur, combat ou riposte contre un agent ennemi <b>blessé</b>, vous pouvez relancer un de vos dés d'attaque.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ploy-group">
+        <div class="ploy-group-title fight-title">Subterfuges d'Affrontement</div>
+        <div class="ploy-list">
+
+          <div class="ploy-item fight">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Combattant déloyal</div>
+              <p>Utilisez ce subterfuge quand un agent GRIFFE NÉMÉSIS ami riposte, au début de l'étape Résoudre les Dés d'Attaque. Vous pouvez résoudre une de vos réussites avant l'ordre normal. Dans ce cas, vous ne pouvez pas résoudre d'autre réussite pendant cette séquence.</p>
+            </div>
+          </div>
+
+          <div class="ploy-item fight">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Hurlement Vox</div>
+              <p>Utilisez ce subterfuge quand votre adversaire est censé activer un agent ennemi visible par un agent GRIFFE NÉMÉSIS ami. Jetez un <b>D6</b> ; si le résultat est supérieur à la LPA de l'agent ennemi, l'adversaire ne peut pas l'activer ; si inférieur ou égal, ce subterfuge n'est pas utilisé, le PC est récupéré et vous ne pouvez plus utiliser ce subterfuge à ce tournant.</p>
+            </div>
+          </div>
+
+          <div class="ploy-item fight">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Propension au meurtre</div>
+              <p>Utilisez ce subterfuge après qu'un agent GRIFFE NÉMÉSIS ami neutralise un agent ennemi à sa portée de contrôle. L'agent ami peut immédiatement effectuer une action <b>Charger</b> ou <b>Sprinter</b> gratuite (pour l'action Charger gratuite, il ne peut pas se déplacer de plus de 3").</p>
+            </div>
+          </div>
+
+          <div class="ploy-item fight">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Mort au faux Empereur</div>
+              <p>Utilisez ce subterfuge après avoir jeté les dés d'attaque contre un agent ennemi avec le mot-clé <b>IMPERIUM</b>. Les armes de cet agent ami ont la règle <b>Inexorable</b> jusqu'à la fin de cette séquence ; si l'agent ennemi a également le mot-clé <b>ADEPTUS ASTARTES</b>, les armes ont la règle <b>Implacable</b> à la place.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Operatives -->
+  <div class="section">
+    <div class="ops-grid">
+
+      <!-- VISIONNAIRE -->
+      <div class="op leader">
+        <div class="op-head">
+          <span class="op-name">Visionnaire</span>
+          <div class="op-meta"><span class="leader-badge">Chef</span></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">15</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pistolet à plasma (standard)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/5</td><td class="wr">Perforante 1, Portée 8"</td></tr>
+            <tr><td class="wn">Pistolet à plasma (surcharge)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>4/5</td><td class="wr">Létale 5+, Perforante 1, Portée 8", Surchauffe</td></tr>
+            <tr><td class="wn">Pistolet bolter<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 8"</td></tr>
+            <tr><td class="wn">Arme énergétique<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/6</td><td class="wr">Létale 5+</td></tr>
+            <tr><td class="wn">Gantelet énergétique<span class="rt rt-m">MEL</span></td><td>5</td><td>4+</td><td>5/7</td><td class="wr">Brutale</td></tr>
+            <tr><td class="wn">Lame tronçonneuse Nostramienne<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">Fracassante</td></tr>
+            <tr><td class="wn">Masse énergétique<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/6</td><td class="wr">Choc</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Prescience</span><span class="ab-tag">Psychique</span></div>
+            <p>À l'étape Préparer de chaque phase de Stratégie, vous gagnez <b>D3 points de Prescience</b>. À la fin de chaque tournant, défaussez vos points. Vous pouvez les dépenser à la phase d'Affrontement (une fois par tournant chacun) :</p>
+            <ul>
+              <li><b>Pressentiment :</b> Quand c'est votre tour d'activer un agent ami, vous pouvez dépenser 1 point pour sauter cette activation.</li>
+              <li><b>Présage :</b> Quand un dé d'attaque inflige des Dégâts Normaux à cet agent, vous pouvez dépenser 1 point pour ignorer les dégâts infligés.</li>
+            </ul>
+            <p>Vous ne pouvez pas gagner ni dépenser de points de Prescience si cet agent est neutralisé.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Prémonition</span><span class="ab-cost">1 PA</span><span class="ab-tag">Psychique</span></div>
+            <p>Dépensez 1 de vos points de Prescience pour gagner <b>1 PC</b>. Cet agent ne peut pas effectuer cette action tant qu'il est à portée de contrôle d'un agent ennemi, ni plus d'une fois par tournant.</p>
+          </div>
+        </div>
+        <div class="keywords">GRIFFE NÉMÉSIS · CHAOS · HERETICUS ASTARTES · PSYKER · LEADER · VISIONNAIRE</div>
+      </div>
+
+      <!-- ÉPOUVANTEUR -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Épouvanteur</span>
+                  </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Fiole terrochimique<span class="rt rt-r">TIR</span></td><td>5</td><td>3+</td><td>2/0</td><td class="wr">Déflagration 2", Dévastatrice 3, Limitée 1, Portée 6", Saturation, Terrochimique</td></tr>
+            <tr><td class="wn">Pistolet bolter à lunette (courte)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Létale 5+, Portée 8"</td></tr>
+            <tr><td class="wn">Pistolet bolter à lunette (longue)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">—</td></tr>
+            <tr><td class="wn">Lame souillée<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>3/5</td><td class="wr">Terrochimique</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Poison Terrochimique</span></div>
+            <p>Quand un agent avec un de vos pions Terrochimiques est activé, infligez-lui <b>D3 dégâts</b>.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Terrochimique</span></div>
+            <p>À l'étape Résoudre les Dés d'Attaque, si vous infligez des dégâts grâce à une réussite critique, l'agent contre lequel l'arme est utilisée gagne un de vos pions de Terrochimique (s'il n'en a pas déjà un).</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Empoisonner l'Objectif</span><span class="ab-cost">1 PA</span></div>
+            <p>Choisissez un marqueur d'objectif que cet agent contrôle, ce marqueur gagne un de vos pions de Terrochimique. La première fois qu'un agent ennemi sans un de vos pions de Terrochimique est à portée de contrôle de ce marqueur, il gagne le pion puis <b>2D3 dégâts</b> lui sont infligés. Cet agent ne peut pas effectuer cette action tant qu'il est à portée de contrôle d'un agent ennemi.</p>
+          </div>
+        </div>
+        <div class="keywords">GRIFFE NÉMÉSIS · CHAOS · HERETICUS ASTARTES · ÉPOUVANTEUR</div>
+      </div>
+
+      <!-- TIREUR -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Tireur</span>
+                  </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pistolet bolter<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 8"</td></tr>
+            <tr><td class="wn">Lance-flammes<span class="rt rt-r">TIR</span></td><td>4</td><td>2+</td><td>3/3</td><td class="wr">Portée 8", Saturation, Torrent 2"</td></tr>
+            <tr><td class="wn">Fuseur<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>6/3</td><td class="wr">Dévastatrice 4, Perforante 2, Portée 6"</td></tr>
+            <tr><td class="wn">Fusil à plasma (standard)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>4/6</td><td class="wr">Perforante 1</td></tr>
+            <tr><td class="wn">Fusil à plasma (surcharge)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>5/6</td><td class="wr">Létale 5+, Perforante 1, Surchauffe</td></tr>
+            <tr><td class="wn">Poings<span class="rt rt-m">MEL</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">—</td></tr>
+          </tbody>
+        </table>
+        <div class="keywords">GRIFFE NÉMÉSIS · CHAOS · HERETICUS ASTARTES · TIREUR</div>
+      </div>
+
+      <!-- TIREUR LOURD -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Tireur Lourd</span>
+                  </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pistolet bolter<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 8"</td></tr>
+            <tr><td class="wn">Bolter lourd (balayage)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>4/5</td><td class="wr">Lourde (Repos. seul.), Perforante Critiques 1, Torrent 1"</td></tr>
+            <tr><td class="wn">Bolter lourd (concentré)<span class="rt rt-r">TIR</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">Lourde (Repos. seul.), Perforante Critiques 1</td></tr>
+            <tr><td class="wn">Lance-missiles (Frag)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/5</td><td class="wr">Déflagration 2", Lourde (Repos. seul.)</td></tr>
+            <tr><td class="wn">Lance-missiles (Krak)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>5/7</td><td class="wr">Lourde (Repos. seul.), Perforante 1</td></tr>
+            <tr><td class="wn">Poings<span class="rt rt-m">MEL</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">—</td></tr>
+          </tbody>
+        </table>
+        <div class="keywords">GRIFFE NÉMÉSIS · CHAOS · HERETICUS ASTARTES · TIREUR LOURD</div>
+      </div>
+
+      <!-- CRISSEUR -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Crisseur</span>
+                  </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Griffes Lightning<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">Inexorable, Létale 5+</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Crisseur</span></div>
+            <p>Quand un agent ennemi à <b>3"</b> de cet agent tire, combat ou riposte, votre adversaire ne peut pas relancer ses dés d'attaque.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Soif de Cruauté</span></div>
+            <p>Quand cet agent combat contre un agent ennemi <b>blessé</b>, les griffes Lightning de cet agent ont la règle <b>Létale 4+</b>.</p>
+          </div>
+        </div>
+        <div class="keywords">GRIFFE NÉMÉSIS · CHAOS · HERETICUS ASTARTES · CRISSEUR</div>
+      </div>
+
+      <!-- VOLEPEAU -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Volepeau</span>
+                  </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pistolet bolter<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 8"</td></tr>
+            <tr><td class="wn">Vouge tronçonneur nostramien<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/6</td><td class="wr">Fracassante</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Faites-leur la Peau</span></div>
+            <p>Une fois par tournant, quand cet agent neutralise un agent ennemi à sa portée de contrôle, vous pouvez choisir un autre agent ennemi visible de cet agent et à <b>6"</b> de lui ou de l'agent ennemi neutralisé. Jusqu'au début du prochain tournant, cet autre agent ennemi ne peut ni contrôler de marqueurs ni effectuer l'action Ramasser un Marqueur ou des actions de mission.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Tyran des Fosses de Dépeçage</span></div>
+            <p>Quand cet agent combat ou riposte, les Dégâts Normaux et Critiques de <b>3 ou plus</b> lui infligent <b>1 dégât de moins</b>.</p>
+          </div>
+        </div>
+        <div class="keywords">GRIFFE NÉMÉSIS · CHAOS · HERETICUS ASTARTES · VOLEPEAU</div>
+      </div>
+
+      <!-- VENTRILOKAR -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Ventrilokar</span>
+                  </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pistolet bolter<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 8"</td></tr>
+            <tr><td class="wn">Epée tronçonneuse<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">—</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Porte-icône</span></div>
+            <p>Quand vous déterminez le contrôle d'un marqueur, traitez la LPA de cet agent comme <b>supérieure de 1</b>. Il ne s'agit pas d'une modification de sa LPA, d'autres modifications peuvent donc se cumuler avec cette règle.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Imitation Déconcertante</span><span class="ab-cost">1 PA</span><span class="ab-tag">Psychique</span></div>
+            <p>Choisissez 1 agent ennemi à <b>6"</b> de cet agent, puis choisissez 1 des choses suivantes (une fois par bataille chacun) :</p>
+            <ul>
+              <li>Jusqu'à la fin de sa prochaine activation, soustrayez <b>1 à sa LPA</b>.</li>
+              <li>Changez son <b>ordre</b>.</li>
+              <li>Effectuez une action <b>Sprinter</b> gratuite avec lui.</li>
+            </ul>
+            <p>Cet agent ne peut pas effectuer cette action tant qu'il est à portée de contrôle d'un agent ennemi.</p>
+          </div>
+        </div>
+        <div class="keywords">GRIFFE NÉMÉSIS · CHAOS · HERETICUS ASTARTES · PSYKER · VENTRILOKAR</div>
+      </div>
+
+      <!-- GUERRIER -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Guerrier</span>
+                  </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pistolet bolter<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 8"</td></tr>
+            <tr><td class="wn">Bolter<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">—</td></tr>
+            <tr><td class="wn">Epée tronçonneuse<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">—</td></tr>
+            <tr><td class="wn">Poings<span class="rt rt-m">MEL</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">—</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Tortionnaire cruel</span></div>
+            <p>Quand cet agent tire sur, combat ou riposte contre un agent ennemi <b>estropié</b>, ou un agent ennemi qui a une caractéristique de Points de Vie de <b>7 ou moins</b>, ses armes ont la règle <b>Létale 5+</b>.</p>
+          </div>
+        </div>
+        <div class="keywords">GRIFFE NÉMÉSIS · CHAOS · HERETICUS ASTARTES · GUERRIER</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Equipment -->
+  <div class="section">
+    <div class="sec-title">Équipement de Faction</div>
+    <div class="equip-grid">
+
+      <div class="eq">
+        <div class="eq-name">Chaînes de sujétion</div>
+        <p>Quand un agent ennemi va effectuer l'action Battre en Retraite alors qu'il est à portée de contrôle d'un agent GRIFFE NÉMÉSIS ami, s'il n'y a pas d'autre agent ennemi à portée de contrôle de l'agent ami, vous pouvez utiliser cette règle. Jetez <b>deux D6</b>, ou <b>un D6</b> si l'agent ennemi a une caractéristique de PV plus élevée. Si au moins un dé donne <b>4+</b>, l'agent ennemi ne peut pas effectuer cette action, aucun PA n'est dépensé et vous ne pouvez plus utiliser cette règle pendant ce tournant.</p>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Brouilleurs de transmissions</div>
+        <p>Quand un agent ennemi est à <b>3"</b> d'un agent GRIFFE NÉMÉSIS ami, la caractéristique de LPA de l'agent ennemi ne peut pas être améliorée. Notez que cela n'affecte pas les caractéristiques de LPA déjà modifiées.</p>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Trophée macabre</div>
+        <p>Une fois par bataille, quand un agent GRIFFE NÉMÉSIS ami neutralise un agent ennemi à <b>2"</b> de lui, cet agent ami gagne un pion de Trophée Macabre (s'il n'en a pas déjà un). Quand un agent ami avec ce pion est à <b>2"</b> et visible d'un agent ennemi, soustrayez <b>1 à la caractéristique d'Attaques</b> des armes dudit agent ennemi.</p>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Peau dépecée</div>
+        <p>Quand un agent ennemi tire sur, combat ou riposte contre un agent GRIFFE NÉMÉSIS ami à <b>2"</b> de lui, votre adversaire ne peut pas relancer ses dés d'attaque dont le résultat est <b>1</b>.</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>Griffe Némésis · Kill Team 2024 · Source : kt.wargamebuilder.com</footer>
+
+</body>
+</html>
