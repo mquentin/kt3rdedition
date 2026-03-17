@@ -50,6 +50,7 @@ Operatives grid (auto-fill, ~340px min per card)
   └── One cell per item
 
 Footer
+  └── Source URL (e.g. "Source : kt.wargamebuilder.com/fr/killteam/view/56")
 ```
 
 ### Operative card structure (top to bottom)
@@ -147,3 +148,28 @@ Add at the end of the `<style>` block:
 | `.ab-tag` | PSYCHIQUE green pill |
 | `equip-grid` / `.eq` | Equipment 4-col grid |
 | `.keywords` | Hidden (`display: none`) |
+
+---
+
+## Step 6 — Register in index.html
+
+After creating the faction HTML file, add a new card to the `faction-grid` in `index.html`:
+
+```html
+<a class="faction-card" href="[filename].html">
+  <span class="faction-name">[Kill team name]</span>
+  <span class="faction-sub">[Subfaction] · [Legion/Chapter/Clan]</span>
+  <div class="faction-tags">
+    <span class="ftag">[Keyword 1]</span>
+    <span class="ftag">[Keyword 2]</span>
+  </div>
+</a>
+```
+
+Also update the **footer** of the faction HTML file to include the exact source URL:
+
+```html
+<footer>[Kill team name] · Kill Team 2024 · Source : kt.wargamebuilder.com/fr/killteam/view/[ID]</footer>
+```
+
+This allows future updates to be traced back to their source directly from the printed sheet.
