@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rôdeurs — Kill Team</title>
+  <style>
+    :root {
+      --bg:       #f4f2ee;
+      --bg2:      #ffffff;
+      --bg3:      #eeece8;
+      --border:   #d4d0cb;
+      --text:     #1c1a16;
+      --dim:      #6a6258;
+      --accent:   #2e1a5e;
+      --accent2:  #5c3a96;
+      --blue:     #1a3464;
+      --blue-bg:  #e6ecf6;
+      --blue-bdr: #9ab0d8;
+      --red:      #6e1a1a;
+      --red-bg:   #f6e6e6;
+      --red-bdr:  #d89a9a;
+      --gold:     #6a4e08;
+      --gold-bg:  #fdf4dc;
+      --gold-bdr: #c8a020;
+      --melee:    #7a2020;
+      --ranged:   #1a3a6a;
+      --green:    #1a4a2a;
+      --green-bg: #e6f4ea;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-bottom: 3px solid var(--accent2);
+    }
+    header h1 { font-size: 22px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; line-height: 1; }
+    .header-sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-top: 2px; }
+    .header-tags { margin-left: auto; display: flex; gap: 5px; flex-wrap: wrap; }
+    .tag { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; background: rgba(255,255,255,0.1); color: #fff; padding: 2px 7px; border: 1px solid rgba(255,255,255,0.2); }
+
+    /* ── PAGE ── */
+    .page { max-width: 1400px; margin: 0 auto; padding: 14px 14px 40px; }
+
+    /* ── SECTION TITLE ── */
+    .sec-title {
+      font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent); border-bottom: 2px solid var(--accent);
+      padding-bottom: 3px; margin-bottom: 8px;
+    }
+    .section { margin-bottom: 14px; }
+
+    /* ── TOP ROW: Composition + Faction Rules ── */
+    .top-row { display: grid; grid-template-columns: 1fr 1.6fr; gap: 12px; margin-bottom: 14px; }
+    @media (max-width: 750px) { .top-row { grid-template-columns: 1fr; } }
+
+    .box { background: var(--bg2); border: 1px solid var(--border); }
+    .box-title {
+      font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); background: var(--bg3); border-bottom: 1px solid var(--border);
+      padding: 5px 10px;
+    }
+    .box-body { padding: 9px 10px; font-size: 11.5px; line-height: 1.55; }
+    .box-body b { color: var(--accent); }
+
+    .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+    .rule-cell { background: var(--bg2); padding: 9px 10px; }
+    .rule-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+    .rule-cell p { font-size: 11px; color: var(--text); line-height: 1.5; padding-left: 10px; }
+    .rule-cell ul { margin: 3px 0 0 10px; padding-left: 12px; }
+    .rule-cell ul li { font-size: 11px; color: var(--text); line-height: 1.5; }
+
+    /* ── PLOYS ── */
+    .ploys-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    @media (max-width: 700px) { .ploys-row { grid-template-columns: 1fr; } }
+
+    .ploy-group { }
+    .ploy-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+
+    .ploy-item { background: var(--bg2); display: grid; grid-template-columns: 44px 1fr; }
+    .ploy-item.strat .ploy-pip { background: var(--blue-bg); border-right: 3px solid var(--blue); }
+    .ploy-item.fight .ploy-pip { background: var(--red-bg);  border-right: 3px solid var(--red); }
+
+    .ploy-pip {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 6px 4px;
+    }
+    .pip-cost { font-size: 13px; font-weight: 900; line-height: 1; }
+    .ploy-item.strat .pip-cost { color: var(--blue); }
+    .ploy-item.fight .pip-cost { color: var(--red); }
+    .pip-label { font-size: 7px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); margin-top: 1px; }
+
+    .ploy-text { padding: 6px 9px; }
+    .ploy-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); margin-bottom: 3px; }
+    .ploy-text p { font-size: 11px; color: var(--dim); line-height: 1.45; padding-left: 10px; }
+    .ploy-text p b { color: var(--text); }
+    .ploy-text ul { margin: 3px 0 0 10px; padding-left: 12px; }
+    .ploy-text ul li { font-size: 11px; color: var(--dim); line-height: 1.45; }
+
+    .ploy-group-title {
+      font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      padding: 5px 8px; border-bottom: 1px solid var(--border);
+    }
+    .strat-title { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-bdr); }
+    .fight-title { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bdr); }
+
+    /* ── OPERATIVES ── */
+    .ops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 10px; }
+
+    .op { background: var(--bg2); border: 1px solid var(--border); }
+    .op.leader { border-color: var(--gold-bdr); }
+
+    .op-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 9px; background: var(--bg3); border-bottom: 1px solid var(--border);
+    }
+    .op.leader .op-head { background: var(--gold-bg); border-bottom-color: var(--gold-bdr); }
+
+    .op-name { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
+    .op.leader .op-name { color: var(--gold); }
+
+    .op-meta { display: flex; gap: 6px; align-items: center; }
+    .leader-badge {
+      font-size: 8px; letter-spacing: 1px; text-transform: uppercase;
+      background: var(--gold-bg); color: var(--gold);
+      padding: 1px 5px; border: 1px solid var(--gold-bdr);
+    }
+    .gravis-badge {
+      font-size: 8px; letter-spacing: 1px; text-transform: uppercase;
+      background: #f0ece0; color: #5a4a1a;
+      padding: 1px 5px; border: 1px solid #c0aa60;
+    }
+
+    .stat-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+    .sc { background: var(--bg2); text-align: center; padding: 4px 2px; }
+    .sl { font-size: 7.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); display: block; }
+    .sv { font-size: 14px; font-weight: 800; color: var(--accent); display: block; line-height: 1.1; }
+
+    /* Weapons */
+    table.wt { width: 100%; border-collapse: collapse; font-size: 10.5px; border-bottom: 1px solid var(--border); }
+    table.wt th {
+      font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim);
+      font-weight: 600; text-align: left; padding: 3px 7px 2px;
+      background: var(--bg3); border-bottom: 1px solid var(--border);
+    }
+    table.wt th:not(:first-child) { text-align: center; }
+    table.wt td { padding: 3px 7px; border-bottom: 1px solid #edeae5; vertical-align: top; }
+    table.wt tr:last-child td { border-bottom: none; }
+    table.wt td:not(:first-child) { text-align: center; }
+
+    .wn { font-weight: 600; }
+    .wr { font-size: 10px; color: var(--dim); font-style: italic; }
+    .rt { display: inline-block; font-size: 7.5px; font-weight: 700; padding: 0 3px; margin-left: 3px; vertical-align: middle; }
+    .rt-r { color: var(--ranged); background: var(--blue-bg); }
+    .rt-m { color: var(--melee); background: var(--red-bg); }
+
+    /* Abilities */
+    .abilities { padding: 7px 9px; display: flex; flex-direction: column; gap: 5px; }
+    .ab { }
+    .ab-head { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+    .ab-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent2); }
+    .ab-cost {
+      font-size: 8px; font-weight: 700; background: #ede6f7; color: var(--accent);
+      padding: 0 5px; border: 1px solid var(--accent2); white-space: nowrap;
+    }
+    .ab-tag {
+      font-size: 8px; font-weight: 700; background: var(--green-bg); color: var(--green);
+      padding: 0 5px; border: 1px solid #7ab890; white-space: nowrap;
+    }
+    .ab-strat {
+      font-size: 8px; font-weight: 700; background: var(--blue-bg); color: var(--blue);
+      padding: 0 5px; border: 1px solid var(--blue-bdr); white-space: nowrap;
+    }
+    .ab p { font-size: 11px; color: var(--dim); line-height: 1.45; padding-left: 10px; }
+    .ab p b { color: var(--text); }
+    .ab ul { margin: 3px 0 0 10px; padding-left: 12px; }
+    .ab ul li { font-size: 11px; color: var(--dim); line-height: 1.5; }
+
+    /* Keywords */
+    .keywords { display: none; }
+
+    /* ── EQUIPMENT ── */
+    .equip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); }
+    .eq { background: var(--bg2); padding: 9px 10px; border-top: 3px solid var(--gold-bdr); }
+    .eq-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .eq p { font-size: 11px; color: var(--dim); line-height: 1.5; padding-left: 10px; }
+    .eq p b { color: var(--text); }
+
+    footer { text-align: center; padding: 12px; color: var(--dim); font-size: 10px; border-top: 1px solid var(--border); letter-spacing: 1px; }
+
+    /* ── PRINT ── */
+    @page { size: landscape; margin: 8mm 10mm; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+      body { font-size: 7px; background: #fff; line-height: 1.15; }
+
+      header { padding: 2px 8px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--accent2); }
+      header h1 { font-size: 11px; }
+      .header-sub { font-size: 6.5px; margin-top: 0; }
+      .tag { font-size: 6px; padding: 1px 3px; }
+
+      .page { padding: 3px 0 0; max-width: 100%; }
+      .section { margin-bottom: 4px; }
+
+      .info-band { display: grid; grid-template-columns: 1fr 2.2fr 1.6fr 1.6fr; gap: 4px; margin-bottom: 4px; align-items: start; }
+      .top-row, .ploys-section, .ploys-row { display: contents; }
+
+      .box-title { padding: 1px 5px; font-size: 6px; }
+      .box-body { padding: 2px 5px; font-size: 6.5px; line-height: 1.15; }
+      .rule-cell { padding: 2px 5px; }
+      .rule-name { font-size: 6.5px; margin-bottom: 1px; }
+      .rule-cell p { font-size: 6px; line-height: 1.15; padding-left: 5px; }
+      .rule-cell ul { margin-left: 5px; }
+      .rule-cell ul li { font-size: 6px; line-height: 1.15; }
+      .sec-title { font-size: 6px; margin-bottom: 2px; padding-bottom: 1px; }
+      .rules-grid { grid-template-columns: 1fr 1fr; }
+
+      .ploy-group-title { display: none; }
+      .ploy-list { display: flex; flex-direction: column; gap: 1px; }
+      .ploy-item { grid-template-columns: 28px 1fr; }
+      .ploy-pip { padding: 3px 2px; }
+      .pip-cost { font-size: 9px; }
+      .pip-label { font-size: 6px; }
+      .ploy-text { padding: 2px 4px; }
+      .ploy-name { font-size: 6.5px; margin-bottom: 1px; }
+      .ploy-text p { font-size: 6px; line-height: 1.15; padding-left: 4px; }
+      .ploy-text ul { margin-left: 4px; }
+      .ploy-text ul li { font-size: 6px; line-height: 1.15; }
+
+      .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 3px; }
+      .op-head { padding: 2px 4px; }
+      .op-name { font-size: 6.5px; }
+      .leader-badge { font-size: 5.5px; padding: 0 2px; }
+      .gravis-badge { font-size: 5.5px; padding: 0 2px; }
+      .sl { font-size: 5.5px; }
+      .sv { font-size: 8px; }
+      .sc { padding: 1px 2px; }
+      table.wt { font-size: 6.5px; }
+      table.wt thead { display: none; }
+      table.wt td { padding: 1px 3px; }
+      .wr { font-size: 6px; }
+      .rt { font-size: 5.5px; padding: 0 2px; }
+      .abilities { padding: 2px 4px; gap: 1px; }
+      .ab-head { margin-bottom: 1px; }
+      .ab-name { font-size: 6.5px; }
+      .ab p { font-size: 6px; line-height: 1.15; padding-left: 4px; }
+      .ab ul { margin-left: 4px; }
+      .ab ul li { font-size: 6px; line-height: 1.15; }
+      .ab-cost, .ab-tag, .ab-strat { font-size: 5.5px; padding: 0 2px; }
+
+      .equip-grid { grid-template-columns: repeat(4, 1fr); }
+      .eq { padding: 2px 4px; border-top-width: 2px; }
+      .eq-name { font-size: 6.5px; margin-bottom: 1px; }
+      .eq p { font-size: 6px; line-height: 1.15; }
+
+      footer { padding: 2px; font-size: 6.5px; }
+
+      .op { break-inside: avoid; }
+      .ploy-item { break-inside: avoid; }
+      .eq { break-inside: avoid; }
+      .rule-cell { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Rôdeurs</h1>
+    <div class="header-sub">Kill Team 2024 · Recherche et destruction / Infiltration</div>
+  </div>
+  <div class="header-tags">
+    <span class="tag">Rôdeur</span>
+    <span class="tag">Grand Dévoreur</span>
+    <span class="tag">Tyranide</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="info-band">
+  <div class="top-row">
+
+    <div class="box">
+      <div class="box-title">Composition</div>
+      <div class="box-body">
+        <b>1 Primat Rôdeur</b> + <b>4 agents RÔDEUR</b> choisis parmi :<br>
+        Funesteserre · Sismofaux · Crache-venin · Guerrier · Fracasseur<br><br>
+        Hormis les agents <b>Guerrier</b>, votre kill team ne peut inclure chacun des agents de cette liste qu'une seule fois.
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-title">Règles de Faction</div>
+      <div class="rules-grid">
+        <div class="rule-cell">
+          <div class="rule-name">Tunnel</div>
+          <p>À la fin de l'étape Placer les Agents, placez votre marqueur de Tunnel numéro 0 sur le sol de la killzone, entièrement dans votre zone d'insertion et au contact de votre bord de killzone. En guise de MANŒUVRE STRATÉGIQUE aux quatre premiers tournants, vous pouvez placer votre marqueur de Tunnel du numéro suivant sur le sol de la killzone entièrement à <b>5"</b> de votre marqueur de Tunnel précédent. Une fois cinq marqueurs de Tunnel placés, n'en placez pas plus. Vos marqueurs de Tunnel et la zone entre vos marqueurs qui se suivent créent votre TUNNEL.</p>
+        </div>
+        <div class="rule-cell">
+          <div class="rule-name">Instincts prédateurs</div>
+          <p>Pendant l'activation de chaque agent RÔDEUR ami, il peut effectuer deux actions Combattre. Chaque agent RÔDEUR ami peut contre-attaquer quel que soit son ordre. Quand il le fait :</p>
+          <ul>
+            <li>Vous pouvez d'abord changer son ordre, ou bien changer son ordre au lieu d'effectuer une action (en ce dernier cas, il compte quand même comme ayant contre-attaqué à ce tournant).</li>
+            <li>Pendant cette contre-attaque, s'il n'effectue pas une action de mission, il peut effectuer une action Creuser gratuite.</li>
+          </ul>
+        </div>
+        <div class="rule-cell" style="grid-column: 1 / -1;">
+          <div class="rule-name">Creuser</div>
+          <p>Quand vous placez une kill team de RÔDEURS avant la bataille, vos deux premiers agents doivent être placés normalement. Chaque autre agent RÔDEUR ami placé ensuite peut être placé sous terre (mis de côté). À la phase d'Affrontement, les agents RÔDEURS amis placés sous terre sont activés et peuvent contre-attaquer normalement. Quand un agent RÔDEUR ami est sous terre, il ne peut effectuer aucune autre action que Creuser. À la fin de la bataille, chaque agent RÔDEUR ami qui est sous terre est neutralisé.<br>
+          <b>Creuser (1 PA) :</b> Si cet agent est sous terre, placez-le sur votre TUNNEL à un endroit où il peut être placé (il n'est plus sous terre). Jusqu'à la fin de l'activation ou de la contre-attaque, soustrayez <b>2"</b> à sa caractéristique de Mouvement. Sinon, si cet agent est sur la killzone et sur votre TUNNEL, retirez-le de la killzone : il est à présent sous terre. Un agent ne peut pas effectuer cette action tant qu'il porte un marqueur, ou s'il n'est ni sous terre, ni sur votre TUNNEL.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section ploys-section">
+    <div class="ploys-row">
+
+      <div class="ploy-group">
+        <div class="ploy-group-title strat-title">Subterfuges Stratégiques</div>
+        <div class="ploy-list">
+
+          <div class="ploy-item strat">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">La mort vient du dessous</div>
+              <p>Quand un agent RÔDEUR ami combat :</p>
+              <ul>
+                <li>S'il a effectué l'action Creuser pendant cette activation ou s'il contre-attaque, ses armes de mêlée ont la règle <b>Équilibrée</b>.</li>
+                <li>S'il est sur votre TUNNEL, ses armes de mêlée ont la règle <b>Inexorable</b>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="ploy-item strat">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Jaillissement soudain</div>
+              <p>Chaque fois qu'un agent tire sur un agent RÔDEUR ami :</p>
+              <ul>
+                <li>Si cet agent ami a effectué l'action Creuser pendant ce tournant, vous pouvez relancer un de vos dés de défense.</li>
+                <li>Si cet agent ami est sur votre TUNNEL, vous pouvez relancer n'importe lequel de vos dés de défense.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="ploy-item strat">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Grouiller hors de vue</div>
+              <p>Choisissez 1 agent RÔDEUR ami sur la killzone. Vous pouvez immédiatement effectuer une action Creuser gratuite avec lui. S'il est à <b>2"</b> de votre TUNNEL, il peut immédiatement effectuer une action Battre en Retraite gratuite ou de Repositionnement gratuite avant.</p>
+            </div>
+          </div>
+
+          <div class="ploy-item strat">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Embusqués des tunnels</div>
+              <p>Quand un agent RÔDEUR ami est sur votre TUNNEL, il est à couvert, sauf s'il est à <b>2"</b> de l'agent actif. Traitez ceci comme un couvert fourni par un terrain Léger.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ploy-group">
+        <div class="ploy-group-title fight-title">Subterfuges d'Affrontement</div>
+        <div class="ploy-list">
+
+          <div class="ploy-item fight">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Frappe fouisseuse</div>
+              <p>Utilisez ce subterfuge quand un agent RÔDEUR ami effectue l'action Creuser. Avant de retirer cet agent de la killzone, ou après l'avoir placé sur votre TUNNEL, infligez <b>D3+1 dégâts</b> à chaque agent ennemi à sa portée de contrôle (faites un jet séparé pour chaque). Vous ne pouvez pas utiliser ce subterfuge à la phase de Stratégie, ou pendant l'activation ou la contre-attaque d'un agent FUNESTESERRE s'il effectue l'action Fente Toxique (et vice versa).</p>
+            </div>
+          </div>
+
+          <div class="ploy-item fight">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Frénésie meurtrière</div>
+              <p>Utilisez ce subterfuge quand un agent RÔDEUR ami est neutralisé. Avant de retirer cet agent de la killzone, infligez <b>D3 dégâts</b> à chaque agent ennemi à sa portée de contrôle (faites un jet séparé pour chaque). Si cet agent ami est un CRACHE-VENIN qui bénéficie des effets de son action Gonfler le Sac Dorsal, infligez <b>2D3 dégâts</b> à la place.</p>
+            </div>
+          </div>
+
+          <div class="ploy-item fight">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Horreur souterraine</div>
+              <p>Utilisez ce subterfuge quand un agent ennemi effectue l'action Combattre et choisit de combattre un agent RÔDEUR ami sur votre TUNNEL. À l'étape Résoudre les Dés d'Attaque de cette séquence, vous résolvez le premier dé d'attaque (c.-à-d. le défenseur au lieu de l'attaquant).</p>
+            </div>
+          </div>
+
+          <div class="ploy-item fight">
+            <div class="ploy-pip"><span class="pip-cost">1</span><span class="pip-label">PC</span></div>
+            <div class="ploy-text">
+              <div class="ploy-name">Évasion sinueuse</div>
+              <p>Utilisez ce subterfuge pendant l'activation ou la contre-attaque d'un agent RÔDEUR ami, avant ou après qu'il a effectué une action. Pendant cette activation ou contre-attaque, cet agent peut :</p>
+              <ul>
+                <li>Effectuer l'action Battre en Retraite pour <b>1PA de moins</b>.</li>
+                <li>Effectuer l'action Charger alors qu'il est à portée de contrôle d'un agent ennemi, et il peut quitter la portée de contrôle de l'agent ennemi pour ce faire.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div><!-- end info-band -->
+
+  <!-- Operatives -->
+  <div class="section">
+    <div class="ops-grid">
+
+      <!-- PRIMAT RÔDEUR -->
+      <div class="op leader">
+        <div class="op-head">
+          <span class="op-name">Primat Rôdeur</span>
+          <div class="op-meta"><span class="leader-badge">Chef</span></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">7"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">5+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">21</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Lame caudale<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Fracassante, Portée 3", Silencieuse</td></tr>
+            <tr><td class="wn">Griffes tranchantes et serres perforantes<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">Fracassante</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Crête Neuroprédatrice</span></div>
+            <p>Quand vous déterminez le contrôle d'un marqueur, traitez la somme des caractéristiques de LPA des agents ennemis qui le contestent comme étant inférieure de <b>1</b> si au moins un de ces agents ennemis est à <b>3"</b> de cet agent. Quand un agent ennemi est à <b>3"</b> de cet agent :</p>
+            <ul>
+              <li>Votre adversaire doit dépenser <b>1PA supplémentaire</b> pour que cet agent ennemi effectue l'action Ramasser un Marqueur et les actions de mission.</li>
+              <li>Votre adversaire ne peut pas relancer ses dés d'attaque ni de défense pour cet agent ennemi.</li>
+            </ul>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Lien Synaptique</span><span class="ab-strat">Manœuvre Strat.</span></div>
+            <p>Si cet agent n'est pas neutralisé. Jetez <b>1 D6</b> et comparez le résultat au numéro du tournant actuel ; si le résultat est :</p>
+            <ul>
+              <li>Au moins deux fois plus grand, vous gagnez <b>1PC</b>.</li>
+              <li>Inférieur : infligez à cet agent autant de dégâts que le résultat.</li>
+              <li>Tout autre résultat, rien ne se passe.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="keywords">RÔDEUR · GRAND DÉVOREUR · TYRANIDE · LEADER · PRIMAT</div>
+      </div>
+
+      <!-- FUNESTESERRE -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Funesteserre</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">7"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">5+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">20</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Glandes toxiques<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 6", Silencieuse, Poison*</td></tr>
+            <tr><td class="wn">Pince caudale<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 3", Silencieuse</td></tr>
+            <tr><td class="wn">Faux toxiques<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">Choc, Létale 5+, Poison*</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">*Poison</span></div>
+            <p>À l'étape Résoudre les Dés d'Attaque, si vous infligez des dégâts avec une ou plusieurs réussites critiques, l'agent contre lequel cette arme est utilisée gagne un de vos pions de Poison (s'il n'en a pas déjà un). Chaque fois qu'un agent qui a un de vos pions de Poison est activé, infligez-lui <b>D3 dégâts</b>.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Fente Toxique</span><span class="ab-cost">1 PA</span></div>
+            <p>Choisissez 1 agent ennemi à <b>2"</b> de cet agent. Sinon, si cet agent est sous terre, choisissez 1 agent ennemi sur votre TUNNEL. Infligez <b>D3+2 dégâts</b> à cet agent ennemi et il gagne un de vos pions de Poison (s'il n'en a pas déjà un). Cet agent peut effectuer cette action tant qu'il est sous terre.</p>
+          </div>
+        </div>
+        <div class="keywords">RÔDEUR · GRAND DÉVOREUR · TYRANIDE · FUNESTESERRE</div>
+      </div>
+
+      <!-- SISMOFAUX -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Sismofaux</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">7"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">5+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">20</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pince caudale<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 3", Silencieuse</td></tr>
+            <tr><td class="wn">Griffes tranchantes et serres perforantes<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">Fracassante</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Embuscade Souterraine</span></div>
+            <p>Une fois par tournant lors de la phase d'Affrontement, après qu'un agent ennemi a effectué une action lors de laquelle il s'est déplacé de plus de <b>2"</b> et finit à <b>2"</b> de votre TUNNEL, si cet agent est sous terre et est soit préparé, soit n'a pas contre-attaqué pendant ce tournant, vous pouvez interrompre pour utiliser cette règle. En ce cas, activez ou contre-attaquez avec cet agent, mais il doit combattre contre ou tirer sur cet agent ennemi en premier. Après avoir résolu l'activation/contre-attaque de cet agent, continuez l'activation/contre-attaque de l'agent ennemi.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Chasseur Hypersensoriel</span></div>
+            <p>Cet agent peut effectuer l'action Charger alors qu'il a un ordre de Dissimulation s'il a effectué l'action Creuser pendant la même activation/contre-attaque.</p>
+          </div>
+        </div>
+        <div class="keywords">RÔDEUR · GRAND DÉVOREUR · TYRANIDE · SISMOFAUX</div>
+      </div>
+
+      <!-- CRACHE-VENIN -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Crache-venin</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">7"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">5+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">20</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pince caudale<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 3", Silencieuse</td></tr>
+            <tr><td class="wn">Trait venimeux (concentré)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>4/5</td><td class="wr">Perforante 1, Portée 8", Poison*</td></tr>
+            <tr><td class="wn">Trait venimeux (déflagration)<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/5</td><td class="wr">Déflagration 2", Portée 8", Poison*</td></tr>
+            <tr><td class="wn">Griffes tranchantes<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">—</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">*Poison</span></div>
+            <p>À l'étape Résoudre les Dés d'Attaque, si vous infligez des dégâts avec une ou plusieurs réussites critiques, l'agent contre lequel cette arme est utilisée gagne un de vos pions de Poison (s'il n'en a pas déjà un). Chaque fois qu'un agent qui a un de vos pions de Poison est activé, infligez-lui <b>D3 dégâts</b>.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Gonfler le sac dorsal</span><span class="ab-cost">1 PA</span></div>
+            <p>Jusqu'à ce que cet agent ait tiré avec son trait venimeux, qu'il ait effectué de nouveau cette action ou effectué l'action Creuser (selon ce qui survient en premier), tous les profils de son trait venimeux ont la règle d'arme <b>Létale 5+</b>, ont leur caractéristique d'Attaque augmentée de <b>1</b>, et la règle Portée 8" est retirée.</p>
+          </div>
+        </div>
+        <div class="keywords">RÔDEUR · GRAND DÉVOREUR · TYRANIDE · CRACHE-VENIN</div>
+      </div>
+
+      <!-- GUERRIER -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Guerrier</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">7"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">5+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">20</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Pince caudale<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Portée 3", Silencieuse</td></tr>
+            <tr><td class="wn">Griffes tranchantes<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">—</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Comportement Instinctif</span></div>
+            <p>Quand cet agent tire sur, combat ou riposte contre un agent ennemi <b>estropié</b>, ou un agent ennemi qui a effectué l'action Battre en Retraite pendant ce tournant, ses armes ont la règle <b>Létale 5+</b>.</p>
+          </div>
+        </div>
+        <div class="keywords">RÔDEUR · GRAND DÉVOREUR · TYRANIDE · GUERRIER</div>
+      </div>
+
+      <!-- FRACASSEUR -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Fracasseur</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">7"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">4+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">20</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr><td class="wn">Masse d'os<span class="rt rt-r">TIR</span></td><td>4</td><td>3+</td><td>3/4</td><td class="wr">Perforante 1, Portée 3", Silencieuse</td></tr>
+            <tr><td class="wn">Griffes tranchantes et pinces broyeuses<span class="rt rt-m">MEL</span></td><td>5</td><td>3+</td><td>4/5</td><td class="wr">Broyer*</td></tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Carapace Renforcée</span></div>
+            <p>Les Dégâts Normaux et Critiques de <b>4 ou plus</b> infligent <b>1 dégât de moins</b> à cet agent.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">*Broyer</span></div>
+            <p>Chaque fois que vous frappez, tirez au dé avec votre adversaire, en ajoutant <b>1</b> à votre résultat si l'agent contre lequel cette arme est utilisée a une caractéristique de PV de <b>9 ou moins</b>. Si vous gagnez, infligez à l'agent concerné autant de dégâts que la différence entre les résultats des dés (jusqu'à un maximum de <b>3 dégâts supplémentaires</b>).</p>
+          </div>
+        </div>
+        <div class="keywords">RÔDEUR · GRAND DÉVOREUR · TYRANIDE · FRACASSEUR</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Equipment -->
+  <div class="section">
+    <div class="sec-title">Équipement de Faction</div>
+    <div class="equip-grid">
+
+      <div class="eq">
+        <div class="eq-name">Chromatospores de camouflage</div>
+        <p>Chaque fois qu'un agent tire sur un agent RÔDEUR ami, si vous pouvez conserver une ou plusieurs sauvegardes de couvert, vous pouvez conserver <b>1 sauvegarde de couvert supplémentaire</b>. Ceci ne se cumule pas avec les sauvegardes améliorées par le terrain de type Promontoire.</p>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Sang acide</div>
+        <p>Quand un agent RÔDEUR ami combat ou riposte, chaque fois qu'un dé d'attaque lui inflige des dégâts, jetez <b>1 D6</b> : sur <b>5+</b>, infligez <b>1 dégât</b> à l'agent ennemi à cette séquence.</p>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Chair métamorphique</div>
+        <p>Quand un agent RÔDEUR ami est activé, il récupère jusqu'à <b>D3 PV perdus</b>.</p>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Sens amplifiés</div>
+        <p>Une fois par bataille, après avoir tiré au dé pour décider l'initiative, si un agent RÔDEUR ami est sous terre et si un agent ennemi est à <b>5"</b> de votre TUNNEL, vous pouvez relancer votre dé.</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>Rôdeurs · Kill Team 2024 · Source : kt.wargamebuilder.com/fr/killteam/view/67</footer>
+
+</body>
+</html>

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deathwatch — Kill Team 2024</title>
+<style>
+:root {
+  --bg: #f4f2ee; --bg2: #ffffff; --bg3: #eeece8; --border: #d4d0cb;
+  --text: #1c1a16; --dim: #6a6258; --accent: #2e1a5e; --accent2: #5c3a96;
+  --blue: #1a3464; --blue-bg: #e6ecf6; --blue-bdr: #9ab0d8;
+  --red: #6e1a1a; --red-bg: #f6e6e6; --red-bdr: #d89a9a;
+  --gold: #6a4e08; --gold-bg: #fdf4dc; --gold-bdr: #c8a020;
+  --melee: #7a2020; --ranged: #1a3a6a; --green: #1a4a2a; --green-bg: #e6f4ea;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; line-height: 1.4; }
+header { background: var(--accent); color: #fff; padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 3px solid var(--accent2); }
+header h1 { font-size: 22px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; line-height: 1; }
+.header-sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-top: 2px; }
+.header-tags { margin-left: auto; display: flex; gap: 5px; flex-wrap: wrap; }
+.tag { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; background: rgba(255,255,255,0.1); color: #fff; padding: 2px 7px; border: 1px solid rgba(255,255,255,0.2); }
+.page { max-width: 1400px; margin: 0 auto; padding: 14px 14px 40px; }
+.sec-title { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 3px; margin-bottom: 8px; }
+.section { margin-bottom: 14px; }
+.top-row { display: grid; grid-template-columns: 1fr 1.6fr; gap: 12px; margin-bottom: 14px; }
+.box { background: var(--bg2); border: 1px solid var(--border); }
+.box-title { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); background: var(--bg3); border-bottom: 1px solid var(--border); padding: 5px 10px; }
+.box-body { padding: 9px 10px; font-size: 11.5px; line-height: 1.55; }
+.box-body b { color: var(--accent); }
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+.rule-cell { background: var(--bg2); padding: 9px 10px; }
+.rule-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.rule-cell p { font-size: 11px; color: var(--text); line-height: 1.5; padding-left: 10px; }
+.ploys-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.ploy-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+.ploy-item { background: var(--bg2); display: grid; grid-template-columns: 44px 1fr; }
+.ploy-item.strat .ploy-pip { background: var(--blue-bg); border-right: 3px solid var(--blue); }
+.ploy-item.fight .ploy-pip { background: var(--red-bg); border-right: 3px solid var(--red); }
+.ploy-pip { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px 4px; }
+.pip-cost { font-size: 13px; font-weight: 900; line-height: 1; }
+.ploy-item.strat .pip-cost { color: var(--blue); }
+.ploy-item.fight .pip-cost { color: var(--red); }
+.pip-label { font-size: 7px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); margin-top: 1px; }
+.ploy-text { padding: 6px 9px; }
+.ploy-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); margin-bottom: 3px; }
+.ploy-text p { font-size: 11px; color: var(--dim); line-height: 1.45; padding-left: 10px; }
+.ploy-text p b { color: var(--text); }
+.ploy-group-title { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 5px 8px; border-bottom: 1px solid var(--border); }
+.strat-title { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-bdr); }
+.fight-title { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bdr); }
+.ops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 10px; }
+.op { background: var(--bg2); border: 1px solid var(--border); }
+.op.leader { border-color: var(--gold-bdr); }
+.op-head { display: flex; justify-content: space-between; align-items: center; padding: 5px 9px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+.op.leader .op-head { background: var(--gold-bg); border-bottom-color: var(--gold-bdr); }
+.op-name { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
+.op.leader .op-name { color: var(--gold); }
+.op-meta { display: flex; gap: 6px; align-items: center; }
+.leader-badge { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; background: var(--gold-bg); color: var(--gold); padding: 1px 5px; border: 1px solid var(--gold-bdr); }
+.stat-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+.sc { background: var(--bg2); text-align: center; padding: 4px 2px; }
+.sl { font-size: 7.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); display: block; }
+.sv { font-size: 14px; font-weight: 800; color: var(--accent); display: block; line-height: 1.1; }
+table.wt { width: 100%; border-collapse: collapse; font-size: 10.5px; border-bottom: 1px solid var(--border); }
+table.wt th { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); font-weight: 600; text-align: left; padding: 3px 7px 2px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+table.wt th:not(:first-child) { text-align: center; }
+table.wt td { padding: 3px 7px; border-bottom: 1px solid #edeae5; vertical-align: top; }
+table.wt tr:last-child td { border-bottom: none; }
+table.wt td:not(:first-child) { text-align: center; }
+.wn { font-weight: 600; }
+.wr { font-size: 10px; color: var(--dim); font-style: italic; }
+.rt { display: inline-block; font-size: 7.5px; font-weight: 700; padding: 0 3px; margin-left: 3px; vertical-align: middle; }
+.rt-r { color: var(--ranged); background: var(--blue-bg); }
+.rt-m { color: var(--melee); background: var(--red-bg); }
+.abilities { padding: 7px 9px; display: flex; flex-direction: column; gap: 5px; }
+.ab-head { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+.ab-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent2); }
+.ab-cost { font-size: 8px; font-weight: 700; background: #ede6f7; color: var(--accent); padding: 0 5px; border: 1px solid var(--accent2); white-space: nowrap; }
+.ab-tag { font-size: 8px; font-weight: 700; background: var(--green-bg); color: var(--green); padding: 0 5px; border: 1px solid #7ab890; white-space: nowrap; }
+.ab p { font-size: 11px; color: var(--dim); line-height: 1.45; padding-left: 10px; }
+.ab p b { color: var(--text); }
+.ab ul { margin: 3px 0 0 10px; padding-left: 12px; }
+.ab ul li { font-size: 11px; color: var(--dim); line-height: 1.5; }
+.keywords { display: none; }
+.equip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); }
+.eq { background: var(--bg2); padding: 9px 10px; border-top: 3px solid var(--gold-bdr); }
+.eq-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.eq p { font-size: 11px; color: var(--dim); line-height: 1.5; padding-left: 10px; }
+.eq p b { color: var(--text); }
+footer { text-align: center; padding: 12px; color: var(--dim); font-size: 10px; border-top: 1px solid var(--border); letter-spacing: 1px; }
+
+@page { size: landscape; margin: 8mm 10mm; }
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-size: 7px; background: #fff; line-height: 1.15; }
+  header { padding: 2px 8px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--accent2); }
+  header h1 { font-size: 11px; }
+  .header-sub { font-size: 6.5px; margin-top: 0; }
+  .tag { font-size: 6px; padding: 1px 3px; }
+  .page { padding: 3px 0 0; max-width: 100%; }
+  .section { margin-bottom: 4px; }
+  .info-band { display: grid; grid-template-columns: 1fr 2.2fr 1.6fr 1.6fr; gap: 4px; align-items: start; margin-bottom: 4px; }
+  .top-row, .ploys-section, .ploys-row { display: contents; }
+  .box-title { padding: 1px 5px; font-size: 6px; }
+  .box-body { padding: 2px 5px; font-size: 6.5px; line-height: 1.15; }
+  .rule-cell { padding: 2px 5px; }
+  .rule-name { font-size: 6.5px; margin-bottom: 1px; }
+  .rule-cell p { font-size: 6.5px; line-height: 1.15; padding-left: 5px; }
+  .sec-title { font-size: 6px; margin-bottom: 2px; padding-bottom: 1px; }
+  .rules-grid { grid-template-columns: 1fr 1fr; }
+  .ploy-group-title { display: none; }
+  .ploy-list { display: flex; flex-direction: column; gap: 1px; }
+  .ploy-item { grid-template-columns: 28px 1fr; }
+  .ploy-pip { padding: 3px 2px; }
+  .pip-cost { font-size: 9px; }
+  .pip-label { font-size: 6px; }
+  .ploy-text { padding: 2px 4px; }
+  .ploy-name { font-size: 6.5px; margin-bottom: 1px; }
+  .ploy-text p { font-size: 6px; line-height: 1.15; padding-left: 4px; }
+  .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 3px; }
+  .op-head { padding: 2px 4px; }
+  .op-name { font-size: 6.5px; }
+  .leader-badge { font-size: 5.5px; padding: 0 2px; }
+  .sl { font-size: 5.5px; }
+  .sv { font-size: 8px; }
+  .sc { padding: 1px 2px; }
+  table.wt { font-size: 6.5px; }
+  table.wt thead { display: none; }
+  table.wt td { padding: 1px 3px; }
+  .wr { font-size: 6px; }
+  .rt { font-size: 5.5px; padding: 0 2px; }
+  .abilities { padding: 2px 4px; gap: 1px; }
+  .ab-head { margin-bottom: 1px; }
+  .ab-name { font-size: 6.5px; }
+  .ab p { font-size: 6px; line-height: 1.15; padding-left: 4px; }
+  .ab ul { margin-left: 4px; }
+  .ab ul li { font-size: 6px; line-height: 1.15; }
+  .ab-cost, .ab-tag { font-size: 5.5px; padding: 0 2px; }
+  .equip-grid { grid-template-columns: repeat(4, 1fr); }
+  .eq { padding: 2px 4px; border-top-width: 2px; }
+  .eq-name { font-size: 6.5px; margin-bottom: 1px; }
+  .eq p { font-size: 6px; line-height: 1.15; }
+  footer { padding: 2px; font-size: 6.5px; }
+  .op { break-inside: avoid; }
+  .ploy-item { break-inside: avoid; }
+  .eq { break-inside: avoid; }
+  .rule-cell { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Deathwatch</h1>
+    <div class="header-sub">Sécurité / Recherche et destruction</div>
+  </div>
+  <div class="header-tags">
+    <span class="tag">Deathwatch</span>
+    <span class="tag">Imperium</span>
+    <span class="tag">Adeptus Astartes</span>
+  </div>
+</header>
+
+<div class="page">
+  <div class="info-band">
+    <div class="top-row">
+      <!-- Composition -->
+      <div class="box">
+        <div class="box-title">Composition</div>
+        <div class="box-body">
+          <p>5 agents <b>DEATHWATCH</b> choisis dans la liste suivante : SERGENT DU GUET, ÉGIDE, MAÎTRE ESCRIMEUR, BOMBARDIER, BRÈCHEUR, DÉMOLISSEUR, DISRUPTEUR, TIREUR, DÉCAPITEUR, HORDICIDE, TIREUR D'ÉLITE.</p>
+          <p style="margin-top:6px;">Votre kill team ne peut inclure qu'un seul de chaque agent de cette liste, et ne peut inclure qu'un seul agent <b>GRAVIS</b>.</p>
+        </div>
+      </div>
+
+      <!-- Faction Rules -->
+      <div class="box">
+        <div class="box-title">Règles de faction</div>
+        <div class="rules-grid">
+          <div class="rule-cell">
+            <div class="rule-name">Vétérans de l'Adeptus Astartes</div>
+            <p>Pendant chaque activation d'un agent <b>DEATHWATCH</b> ami, celui-ci peut effectuer soit deux actions <b>Tirer</b>, soit deux actions <b>Combattre</b>. Dans le cas de deux actions <b>Tirer</b>, 1PA supplémentaire doit être dépensé pour la deuxième action si les deux actions utilisent un lance-grenades auxiliaire, un canon Frag, un incinérateur à plasma lourd, un bolter lourd Infernus, un pistolet à plasma ou un fusil bolter Stalker, ou si une bombe à fusion est choisie pour une des deux actions.</p>
+          </div>
+          <div class="rule-cell">
+            <div class="rule-name">Munitions spéciales</div>
+            <p>Une fois par tournant, quand un agent <b>DEATHWATCH</b> ami effectue l'action <b>Tirer</b>, lors de l'étape Choisir l'Arme, vous pouvez utiliser cette règle. Choisissez 1 des règles d'arme suivantes : Déflagration 1", Dévastatrice 1, Létale 5+, Perforante Critiques 1, Saturation, Fatale.</p>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.top-row -->
+
+    <!-- Ploys Section -->
+    <div class="section ploys-section">
+      <div class="ploys-row">
+        <!-- Subterfuges Stratégiques -->
+        <div>
+          <div class="ploy-group-title strat-title">Subterfuges Stratégiques</div>
+          <div class="ploy-list">
+
+            <div class="ploy-item strat">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Tactiques de mission</div>
+                <p>Choisissez Dissimulation ou Engagement. Quand un agent <b>DEATHWATCH</b> ami tire sur ou combat contre un agent ennemi qui a cet ordre, les armes de cet agent ami ont la règle <b>Équilibrée</b>.</p>
+              </div>
+            </div>
+
+            <div class="ploy-item strat">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">La longue veille</div>
+                <p>Chaque fois qu'un agent tire sur un agent <b>DEATHWATCH</b> ami entièrement sur votre territoire, vous pouvez relancer un de vos dés de défense.</p>
+              </div>
+            </div>
+
+            <div class="ploy-item strat">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Le bouclier mortel</div>
+                <p>Quand un agent <b>DEATHWATCH</b> ami est entièrement sur le territoire adverse, les Dégâts Normaux de 4 ou plus lui infligent 1 dégât de moins.</p>
+              </div>
+            </div>
+
+            <div class="ploy-item strat">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Et ils ne connaîtront pas la peur</div>
+                <p>Vous pouvez ignorer les modifications aux caractéristiques des agents <b>DEATHWATCH</b> amis dues au fait d'être estropié (y compris pour les caractéristiques de leurs armes).</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Subterfuges d'Affrontement -->
+        <div>
+          <div class="ploy-group-title fight-title">Subterfuges d'Affrontement</div>
+          <div class="ploy-list">
+
+            <div class="ploy-item fight">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Ne tolérez pas le xéno</div>
+                <p>Utilisez ce subterfuge d'affrontement après avoir jeté vos dés d'attaque pour un agent <b>DEATHWATCH</b> ami, s'il tire sur ou combat contre un agent qui n'a pas le mot-clé <b>CHAOS</b> ou <b>IMPERIUM</b>. Vous pouvez relancer un ou plusieurs de vos dés d'attaque.</p>
+              </div>
+            </div>
+
+            <div class="ploy-item fight">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Traçage d'auspicateur</div>
+                <p>Utilisez ce subterfuge d'affrontement quand un agent <b>DEATHWATCH</b> ami contre-attaque, avant qu'il effectue la moindre action. Vous pouvez changer son ordre.</p>
+              </div>
+            </div>
+
+            <div class="ploy-item fight">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Scan d'auspex avancé</div>
+                <p>Utilisez ce subterfuge d'affrontement quand un agent <b>DEATHWATCH</b> ami effectue l'action Tirer. Jusqu'à la fin de l'activation/contre-attaque, ses armes de tir ont la règle <b>Saturation</b> et les agents ennemis ne peuvent pas être masqués.</p>
+              </div>
+            </div>
+
+            <div class="ploy-item fight">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Physiologie transhumaine</div>
+                <p>Utilisez ce subterfuge d'affrontement quand un agent tire sur un agent <b>DEATHWATCH</b> ami, à l'étape Jeter les Dés de Défense. Vous pouvez conserver 1 de vos réussites normales comme une réussite critique.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div><!-- /.ploys-section -->
+  </div><!-- /.info-band -->
+
+  <!-- Operatives -->
+  <div class="section">
+    <div class="sec-title">Agents</div>
+    <div class="ops-grid">
+
+      <!-- Sergent du Guet -->
+      <div class="op leader">
+        <div class="op-head">
+          <span class="op-name">Sergent du Guet</span>
+          <div class="op-meta">
+            <span class="leader-badge">Chef</span>
+          </div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">15</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Pistolet à plasma (standard)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/5</td>
+              <td><span class="wr">Perforante 1, Portée 8"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Pistolet à plasma (surcharge)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>4/5</td>
+              <td><span class="wr">Létale 5+, Perforante 1, Portée 8", Surchauffe</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Arme énergétique</span><span class="rt rt-m">MEL</span></td>
+              <td>5</td><td>3+</td><td>4/6</td>
+              <td><span class="wr">Létale 5+</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Arsenal Adaptable</span></div>
+            <p>Vous pouvez choisir une option d'équipement supplémentaire.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Commandement Stratégique</span></div>
+            <p>Vous pouvez faire chacune des choses suivantes une fois par bataille si cet agent est sur la killzone : Utiliser un subterfuge stratégique <b>DEATHWATCH</b> pour 0PC. Utiliser un subterfuge d'affrontement <b>DEATHWATCH</b> pour 0PC.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Égide vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Égide vétéran</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">2+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">15</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Pistolet bolter</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td><span class="wr">Portée 8"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Masse énergétique et bouclier Storm</span><span class="rt rt-m">MEL</span></td>
+              <td>5</td><td>3+</td><td>4/6</td>
+              <td><span class="wr">Choc, Bouclier</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Bouclier Storm</span></div>
+            <p>Chaque fois qu'un agent tire sur cet agent, dégradez de 1 le x de la règle Perforante (le cas échéant). Notez que la règle Perforante 1 serait donc ignorée.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Maître escrimeur vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Maître escrimeur vétéran</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">15</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Pistolet bolter spécialisé</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td><span class="wr">Perforante 1, Portée 8"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Lame de Xénophase (balayage de phase)</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>4/6</td>
+              <td><span class="wr">Brutale, Létale 5+, Balayage de Phase</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Lame de Xénophase (duel)</span><span class="rt rt-m">MEL</span></td>
+              <td>5</td><td>3+</td><td>4/6</td>
+              <td><span class="wr">Brutale, Létale 5+</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Escrimeur Polyvalent</span></div>
+            <p>Vous pouvez ignorer tout changement à la caractéristique de Touche de la lame de xénophase de cet agent. Quand cet agent combat ou riposte, vous pouvez résoudre une de vos réussites avant l'ordre normal. Dans ce cas, cette réussite doit être utilisée pour bloquer.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Balayage de Phase</span></div>
+            <p>Quand cet agent effectue l'action Combattre avec ce profil d'arme, s'il n'est pas neutralisé, il peut effectuer une action Combattre gratuite après cela, mais vous devez choisir ce profil d'arme et il peut combattre seulement contre chaque agent ennemi utilisant ce profil d'arme. Cela prend le pas sur les restrictions d'action, et vous pouvez continuer à effectuer des actions Combattre gratuites jusqu'à ce que cet agent soit neutralisé ou qu'il ait combattu contre chaque agent ennemi à sa portée de contrôle.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bombardier vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Bombardier vétéran</span>
+          <div class="op-meta"><span class="tag" style="background:var(--bg3);color:var(--dim);border-color:var(--border);">GRAVIS</span></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">18</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Canon Frag (obus)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>5/7</td>
+              <td><span class="wr">Perforante 1</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Canon Frag (shrapnel)</span><span class="rt rt-r">TIR</span></td>
+              <td>5</td><td>3+</td><td>4/5</td>
+              <td><span class="wr">Torrent 2"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Pistolet bolter</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td><span class="wr">Portée 8"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Poings</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Brècheur vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Brècheur vétéran</span>
+          <div class="op-meta"><span class="tag" style="background:var(--bg3);color:var(--dim);border-color:var(--border);">GRAVIS</span></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">18</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Bombe à fusion</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>5/3</td>
+              <td><span class="wr">Dévastatrice 3, Limitée 1, Lourde (Repositionnement seulement), Perforante 2, Portée 3"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Fusil bolter Hellstorm</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>4/5</td>
+              <td><span class="wr">Torrent 1"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Lance-grenades auxiliaire (Frag)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>2/4</td>
+              <td><span class="wr">Déflagration 2"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Lance-grenades auxiliaire (Krak)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>4/5</td>
+              <td><span class="wr">Perforante 1</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Poings</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Démolisseur vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Démolisseur vétéran</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">15</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Pistolet bolter</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td><span class="wr">Portée 8"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Marteau Tonnerre lourd</span><span class="rt rt-m">MEL</span></td>
+              <td>5</td><td>4+</td><td>6/7</td>
+              <td><span class="wr">Choc, Étourdissante</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Assaut Brutal</span></div>
+            <p>Quand cet agent combat, son marteau tonnerre lourd a la règle <b>Brutale</b>. Quand cet agent effectue l'action Charger, son marteau tonnerre lourd a la règle <b>Inexorable</b> jusqu'à la fin de l'activation/contre-attaque.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Force Agressive</span></div>
+            <p>Quand cet agent combat ou riposte, les dégâts Normaux et Critiques de 3 ou plus lui infligent 1 dégât de moins. Cela ne se cumule pas avec le subterfuge stratégique Le Bouclier Mortel.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disrupteur vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Disrupteur vétéran</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">7"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">13</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Carabine bolter d'élite</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td><span class="wr">Létale 5+</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Poings</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Omnibrouilleur Sophistiqué</span><span class="ab-cost">MANŒUVRE STRATÉGIQUE</span></div>
+            <p>Choisissez 1 agent ennemi visible par ou à 6" de cet agent, puis jetez un D6. À la phase d'Affrontement qui suit, l'agent ennemi ne peut pas activer ni effectuer d'action jusqu'à ce qu'un de ces critères se vérifie : Votre adversaire a activé un nombre d'agents ennemis égal au résultat du D6. C'est le dernier agent ennemi à être activé.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Triangulation d'Auspex</span></div>
+            <p>Le subterfuge d'affrontement Scan d'Auspex Avancé vous coûte 0PC quand ces deux critères se vérifient : Cet agent n'est pas à portée de contrôle des agents ennemis. La cible de cette action Tirer (la cible principale, le cas échéant) est visible par cet agent.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tireur vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Tireur vétéran</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">15</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Incinérateur à plasma lourd (standard)</span><span class="rt rt-r">TIR</span></td>
+              <td>5</td><td>3+</td><td>4/6</td>
+              <td><span class="wr">Perforante 1</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Incinérateur à plasma lourd (surcharge)</span><span class="rt rt-r">TIR</span></td>
+              <td>5</td><td>3+</td><td>5/6</td>
+              <td><span class="wr">Létale 5+, Perforante 1, Surchauffe</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Pistolet bolter</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td><span class="wr">Portée 8"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Poings</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Décapiteur vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Décapiteur vétéran</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">7"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">13</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Pistolet bolter spécialisé</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td><span class="wr">Perforante 1, Portée 8"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Couteaux de combat</span><span class="rt rt-m">MEL</span></td>
+              <td>5</td><td>3+</td><td>4/5</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Grav-chute et Lance-grappin</span></div>
+            <p>Quand cet agent escalade, comptez la distance verticale comme étant égale à 2" (quelle que soit la distance verticale que l'agent parcourt réellement). Quand cet agent se laisse tomber, ignorez la distance verticale.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Décapiteur Foudroyant</span></div>
+            <p>Cet agent peut effectuer l'action Charger alors qu'il a un ordre de Dissimulation. Quand cet agent combat contre un agent qui ne le voyait pas au début de l'activation/contre-attaque, la première fois que vous frappez pendant cette séquence, vous pouvez immédiatement résoudre une autre de vos réussites comme une frappe (avant votre adversaire).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hordicide vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Hordicide vétéran</span>
+          <div class="op-meta"><span class="tag" style="background:var(--bg3);color:var(--dim);border-color:var(--border);">GRAVIS</span></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">18</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Bolter lourd Infernus (balayage)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>4/5</td>
+              <td><span class="wr">Perforante Critiques 1, Torrent 1"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Bolter lourd Infernus (concentré)</span><span class="rt rt-r">TIR</span></td>
+              <td>5</td><td>3+</td><td>4/5</td>
+              <td><span class="wr">Perforante Critiques 1</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Bolter lourd Infernus (flammes)</span><span class="rt rt-r">TIR</span></td>
+              <td>5</td><td>2+</td><td>3/3</td>
+              <td><span class="wr">Portée 8", Saturation, Torrent 2"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Pistolet bolter</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td><span class="wr">Portée 8"</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Poings</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tireur d'Élite vétéran -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Tireur d'Élite vétéran</span>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">6"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">15</span></div>
+        </div>
+        <table class="wt">
+          <thead><tr><th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Fusil bolter Stalker (lourd)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>2+</td><td>3/5</td>
+              <td><span class="wr">Létale 5+, Lourde (Sprinter seulement), Perforante Critiques 1</span></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Fusil bolter Stalker (mobile)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><span class="wn">Poings</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head"><span class="ab-name">Tireur d'Élite Vigilant</span></div>
+            <p>Cet agent peut effectuer l'action de Garde sur n'importe quelle killzone. Quand vous utilisez les règles de combat rapproché, une fois par tournant, après que cet agent a effectué une action Tirer gratuite en garde, il peut immédiatement effectuer une action de Garde gratuite. Cependant, s'il le fait, il ne peut pas contre-attaquer (ni se mettre deux fois en Garde si on le contre-attaque).</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.ops-grid -->
+  </div><!-- /.section operatives -->
+
+  <!-- Equipment -->
+  <div class="section">
+    <div class="sec-title">Équipement de faction</div>
+    <div class="equip-grid">
+
+      <div class="eq">
+        <div class="eq-name">Armes digitales</div>
+        <p>Une fois par tournant, quand un agent <b>DEATHWATCH</b> ami effectue l'action <b>Combattre</b>, au début de l'étape Jeter les Dés d'Attaque, vous pouvez utiliser cette règle. Dans ce cas, infligez 1 dégât à l'agent ennemi de cette séquence.</p>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Servoséide scrutavore</div>
+        <p>Une fois par tournant, pendant l'activation d'un agent <b>DEATHWATCH</b> ami, vous pouvez utiliser cette règle. Dans ce cas, pendant cette activation, cet agent peut effectuer une action de mission pour 1PA de moins. Avoir un agent ennemi à sa portée de contrôle n'empêche pas cet agent ami d'effectuer cette action de mission. Toutefois, dans un tel cas, après qu'il a effectué l'action de mission, votre adversaire et vous tirez au dé. Si votre adversaire gagne, vous ne pouvez plus utiliser cet équipement pour le restant de la bataille.</p>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Brassards bioradars de sanctus-v</div>
+        <p>Une fois pendant chaque activation d'un agent <b>DEATHWATCH</b> ami, avant qu'il n'effectue une action ou après qu'il a effectué une action, s'il n'est à portée de contrôle d'aucun agent ennemi, vous pouvez utiliser cette règle. Dans ce cas, choisissez 1 des choses suivantes :</p>
+        <ul style="margin: 4px 0 0 10px; padding-left: 12px;">
+          <li style="font-size:11px;color:var(--dim);line-height:1.5;">L'agent ami récupère D3 PV perdus.</li>
+          <li style="font-size:11px;color:var(--dim);line-height:1.5;">Retirez tout changement à la caractéristique de LPA de cet agent ami.</li>
+          <li style="font-size:11px;color:var(--dim);line-height:1.5;">Retirez un des pions suivants qu'a cet agent ami (avant de résoudre les effets d'activation de ce pion, le cas échéant) : Fragment Neutronique, Poison, Terrochimique.</li>
+        </ul>
+      </div>
+
+      <div class="eq">
+        <div class="eq-name">Réserve de munitions</div>
+        <p>Une fois par bataille, vous pouvez utiliser la règle de faction <b>Munitions Spéciales</b> pour deux actions Tirer pendant un tournant, mais vous devez choisir différentes règles d'arme pour chacune de ces utilisations.</p>
+      </div>
+
+    </div><!-- /.equip-grid -->
+  </div><!-- /.section equipment -->
+
+</div><!-- /.page -->
+
+<footer>
+  Deathwatch · Kill Team 2024 · Source : kt.wargamebuilder.com/fr/killteam/view/70
+</footer>
+
+</body>
+</html>

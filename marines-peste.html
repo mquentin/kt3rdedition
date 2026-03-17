@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marines de la Peste – Kill Team 2024</title>
+<style>
+:root {
+  --bg: #f4f2ee; --bg2: #ffffff; --bg3: #eeece8; --border: #d4d0cb;
+  --text: #1c1a16; --dim: #6a6258; --accent: #2e1a5e; --accent2: #5c3a96;
+  --blue: #1a3464; --blue-bg: #e6ecf6; --blue-bdr: #9ab0d8;
+  --red: #6e1a1a; --red-bg: #f6e6e6; --red-bdr: #d89a9a;
+  --gold: #6a4e08; --gold-bg: #fdf4dc; --gold-bdr: #c8a020;
+  --melee: #7a2020; --ranged: #1a3a6a; --green: #1a4a2a; --green-bg: #e6f4ea;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; line-height: 1.4; }
+header { background: var(--accent); color: #fff; padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 3px solid var(--accent2); }
+header h1 { font-size: 22px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; line-height: 1; }
+.header-sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-top: 2px; }
+.header-tags { margin-left: auto; display: flex; gap: 5px; flex-wrap: wrap; }
+.tag { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; background: rgba(255,255,255,0.1); color: #fff; padding: 2px 7px; border: 1px solid rgba(255,255,255,0.2); }
+.page { max-width: 1400px; margin: 0 auto; padding: 14px 14px 40px; }
+.sec-title { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 3px; margin-bottom: 8px; }
+.section { margin-bottom: 14px; }
+.top-row { display: grid; grid-template-columns: 1fr 1.6fr; gap: 12px; margin-bottom: 14px; }
+.box { background: var(--bg2); border: 1px solid var(--border); }
+.box-title { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); background: var(--bg3); border-bottom: 1px solid var(--border); padding: 5px 10px; }
+.box-body { padding: 9px 10px; font-size: 11.5px; line-height: 1.55; }
+.box-body b { color: var(--accent); }
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+.rule-cell { background: var(--bg2); padding: 9px 10px; }
+.rule-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.rule-cell p { font-size: 11px; color: var(--text); line-height: 1.5; padding-left: 10px; }
+.ploys-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.ploy-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+.ploy-item { background: var(--bg2); display: grid; grid-template-columns: 44px 1fr; }
+.ploy-item.strat .ploy-pip { background: var(--blue-bg); border-right: 3px solid var(--blue); }
+.ploy-item.fight .ploy-pip { background: var(--red-bg); border-right: 3px solid var(--red); }
+.ploy-pip { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px 4px; }
+.pip-cost { font-size: 13px; font-weight: 900; line-height: 1; }
+.ploy-item.strat .pip-cost { color: var(--blue); }
+.ploy-item.fight .pip-cost { color: var(--red); }
+.pip-label { font-size: 7px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); margin-top: 1px; }
+.ploy-text { padding: 6px 9px; }
+.ploy-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); margin-bottom: 3px; }
+.ploy-text p { font-size: 11px; color: var(--dim); line-height: 1.45; padding-left: 10px; }
+.ploy-text p b { color: var(--text); }
+.ploy-group-title { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 5px 8px; border-bottom: 1px solid var(--border); }
+.strat-title { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-bdr); }
+.fight-title { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bdr); }
+.ops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 10px; }
+.op { background: var(--bg2); border: 1px solid var(--border); }
+.op.leader { border-color: var(--gold-bdr); }
+.op-head { display: flex; justify-content: space-between; align-items: center; padding: 5px 9px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+.op.leader .op-head { background: var(--gold-bg); border-bottom-color: var(--gold-bdr); }
+.op-name { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
+.op.leader .op-name { color: var(--gold); }
+.op-meta { display: flex; gap: 6px; align-items: center; }
+.leader-badge { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; background: var(--gold-bg); color: var(--gold); padding: 1px 5px; border: 1px solid var(--gold-bdr); }
+.stat-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+.sc { background: var(--bg2); text-align: center; padding: 4px 2px; }
+.sl { font-size: 7.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); display: block; }
+.sv { font-size: 14px; font-weight: 800; color: var(--accent); display: block; line-height: 1.1; }
+table.wt { width: 100%; border-collapse: collapse; font-size: 10.5px; border-bottom: 1px solid var(--border); }
+table.wt th { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); font-weight: 600; text-align: left; padding: 3px 7px 2px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+table.wt th:not(:first-child) { text-align: center; }
+table.wt td { padding: 3px 7px; border-bottom: 1px solid #edeae5; vertical-align: top; }
+table.wt tr:last-child td { border-bottom: none; }
+table.wt td:not(:first-child) { text-align: center; }
+.wn { font-weight: 600; }
+.wr { font-size: 10px; color: var(--dim); font-style: italic; }
+.rt { display: inline-block; font-size: 7.5px; font-weight: 700; padding: 0 3px; margin-left: 3px; vertical-align: middle; }
+.rt-r { color: var(--ranged); background: var(--blue-bg); }
+.rt-m { color: var(--melee); background: var(--red-bg); }
+.abilities { padding: 7px 9px; display: flex; flex-direction: column; gap: 5px; }
+.ab-head { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+.ab-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent2); }
+.ab-cost { font-size: 8px; font-weight: 700; background: #ede6f7; color: var(--accent); padding: 0 5px; border: 1px solid var(--accent2); white-space: nowrap; }
+.ab-tag { font-size: 8px; font-weight: 700; background: var(--green-bg); color: var(--green); padding: 0 5px; border: 1px solid #7ab890; white-space: nowrap; }
+.ab p { font-size: 11px; color: var(--dim); line-height: 1.45; padding-left: 10px; }
+.ab p b { color: var(--text); }
+.ab ul { margin: 3px 0 0 10px; padding-left: 12px; }
+.ab ul li { font-size: 11px; color: var(--dim); line-height: 1.5; }
+.keywords { display: none; }
+.equip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); }
+.eq { background: var(--bg2); padding: 9px 10px; border-top: 3px solid var(--gold-bdr); }
+.eq-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.eq p { font-size: 11px; color: var(--dim); line-height: 1.5; padding-left: 10px; }
+.eq p b { color: var(--text); }
+footer { text-align: center; padding: 12px; color: var(--dim); font-size: 10px; border-top: 1px solid var(--border); letter-spacing: 1px; }
+
+@page { size: landscape; margin: 8mm 10mm; }
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-size: 7px; background: #fff; line-height: 1.15; }
+  header { padding: 2px 8px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--accent2); }
+  header h1 { font-size: 11px; }
+  .header-sub { font-size: 6.5px; margin-top: 0; }
+  .tag { font-size: 6px; padding: 1px 3px; }
+  .page { padding: 3px 0 0; max-width: 100%; }
+  .section { margin-bottom: 4px; }
+  .info-band { display: grid; grid-template-columns: 1fr 2.2fr 1.6fr 1.6fr; gap: 4px; align-items: start; margin-bottom: 4px; }
+  .top-row, .ploys-section, .ploys-row { display: contents; }
+  .box-title { padding: 1px 5px; font-size: 6px; }
+  .box-body { padding: 2px 5px; font-size: 6.5px; line-height: 1.15; }
+  .rule-cell { padding: 2px 5px; }
+  .rule-name { font-size: 6.5px; margin-bottom: 1px; }
+  .rule-cell p { font-size: 6.5px; line-height: 1.15; padding-left: 5px; }
+  .sec-title { font-size: 6px; margin-bottom: 2px; padding-bottom: 1px; }
+  .rules-grid { grid-template-columns: 1fr 1fr; }
+  .ploy-group-title { display: none; }
+  .ploy-list { display: flex; flex-direction: column; gap: 1px; }
+  .ploy-item { grid-template-columns: 28px 1fr; }
+  .ploy-pip { padding: 3px 2px; }
+  .pip-cost { font-size: 9px; }
+  .pip-label { font-size: 6px; }
+  .ploy-text { padding: 2px 4px; }
+  .ploy-name { font-size: 6.5px; margin-bottom: 1px; }
+  .ploy-text p { font-size: 6px; line-height: 1.15; padding-left: 4px; }
+  .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 3px; }
+  .op-head { padding: 2px 4px; }
+  .op-name { font-size: 6.5px; }
+  .leader-badge { font-size: 5.5px; padding: 0 2px; }
+  .sl { font-size: 5.5px; }
+  .sv { font-size: 8px; }
+  .sc { padding: 1px 2px; }
+  table.wt { font-size: 6.5px; }
+  table.wt thead { display: none; }
+  table.wt td { padding: 1px 3px; }
+  .wr { font-size: 6px; }
+  .rt { font-size: 5.5px; padding: 0 2px; }
+  .abilities { padding: 2px 4px; gap: 1px; }
+  .ab-head { margin-bottom: 1px; }
+  .ab-name { font-size: 6.5px; }
+  .ab p { font-size: 6px; line-height: 1.15; padding-left: 4px; }
+  .ab ul { margin-left: 4px; }
+  .ab ul li { font-size: 6px; line-height: 1.15; }
+  .ab-cost, .ab-tag { font-size: 5.5px; padding: 0 2px; }
+  .equip-grid { grid-template-columns: repeat(4, 1fr); }
+  .eq { padding: 2px 4px; border-top-width: 2px; }
+  .eq-name { font-size: 6.5px; margin-bottom: 1px; }
+  .eq p { font-size: 6px; line-height: 1.15; }
+  footer { padding: 2px; font-size: 6.5px; }
+  .op { break-inside: avoid; }
+  .ploy-item { break-inside: avoid; }
+  .eq { break-inside: avoid; }
+  .rule-cell { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Marines de la Peste</h1>
+    <div class="header-sub">Sécurité / Recherche et destruction</div>
+  </div>
+  <div class="header-tags">
+    <span class="tag">Marine de la Peste</span>
+    <span class="tag">Chaos</span>
+    <span class="tag">Hereticus Astartes</span>
+  </div>
+</header>
+
+<div class="page">
+  <div class="info-band">
+    <div class="top-row">
+      <!-- Composition -->
+      <div class="box">
+        <div class="box-title">Composition</div>
+        <div class="box-body">
+          <b>1</b> agent <b>CHAMPION MARINE DE LA PESTE</b><br>
+          + <b>5</b> agents <b>MARINE DE LA PESTE</b> choisis dans la liste suivante :<br>
+          BOMBARDIER, COMBATTANT, TIREUR LOURD, PORTE-ICÔNE, ESSAIMEUR RÉPUGNANT, GUERRIER.<br><br>
+          Chacun des agents ci-dessus ne peut être inclus qu'une seule fois.
+        </div>
+      </div>
+
+      <!-- Faction Rules -->
+      <div class="box">
+        <div class="box-title">Règles de faction</div>
+        <div class="rules-grid">
+          <div class="rule-cell">
+            <div class="rule-name">Astartes</div>
+            <p>Au cours de l'activation de chaque agent MARINE DE LA PESTE ami, il peut effectuer deux actions Tirer ou deux actions Combattre. Si vous choisissez deux actions Tirer, vous devez choisir un pistolet bolter, un bolter ou une arme PSYCHIQUE pour au moins une de ces actions. Vous ne pouvez pas choisir la même arme de tir PSYCHIQUE plus d'une fois par activation. Chaque agent MARINE DE LA PESTE ami peut contre-attaquer quel que soit son ordre.</p>
+          </div>
+          <div class="rule-cell">
+            <div class="rule-name">Poison</div>
+            <p>À l'étape Résoudre les Dés d'Attaque, si vous infligez des dégâts avec une ou plusieurs réussites, l'agent contre lequel est utilisée cette arme (sauf les agents MARINES DE LA PESTE ami) gagne l'un de vos pions de Poison (s'il n'en a pas déjà un). Quand un agent qui a un de vos pions de Poison est activé, infligez-lui 1 dégât.</p>
+          </div>
+          <div class="rule-cell" style="grid-column: 1 / -1;">
+            <div class="rule-name">Affreusement résistant</div>
+            <p>Quand un dé d'attaque inflige un dégât de 3 ou plus à un agent MARINE DE LA PESTE ami, jetez un D6 : sur 4+, soustrayez 1 aux dégâts infligés.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ploys -->
+    <div class="section ploys-section">
+      <div class="ploys-row">
+        <!-- Subterfuges Stratégiques -->
+        <div>
+          <div class="ploy-group-title strat-title">Subterfuges Stratégiques</div>
+          <div class="ploy-list">
+            <div class="ploy-item strat">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Contagion</div>
+                <p>Soustrayez 2" à la caractéristique de Mouvement d'un agent ennemi et diminuez la caractéristique de Touche de ses armes de 1 (cela ne se cumule pas avec le fait d'être estropié) chaque fois qu'une ou plusieurs de ces conditions se vérifient : Il a un de vos pions de Poison et est visible de (ou vice versa) et à 3" d'un ou plusieurs agents MARINES DE LA PESTE amis. Il est visible de (ou vice versa) et à 3" d'un agent PORTE-ICÔNE MARINE DE LA PESTE ami.</p>
+              </div>
+            </div>
+            <div class="ploy-item strat">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Mort pesante</div>
+                <p>Quand un agent MARINE DE LA PESTE ami tire sur ou combat au cours d'une activation lors de laquelle il ne s'est pas déplacé de plus de 3", ou quand il riposte, ses armes ont la règle Inexorable.</p>
+              </div>
+            </div>
+            <div class="ploy-item strat">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Nuage de mouches</div>
+                <p>Placez un de vos marqueurs de Nuage de Mouches sur la killzone. Chaque fois qu'un agent tire sur un agent MARINE DE LA PESTE ami qui est à plus de 3" de lui, si cet agent ami est entièrement à 1" de ce marqueur, cet agent ami est masqué. Lors de l'étape de Préparation de la prochaine phase de Stratégie, retirez ce marqueur.</p>
+              </div>
+            </div>
+            <div class="ploy-item strat">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Nurglings</div>
+                <p>Choisissez 1 agent ennemi à 3" d'un agent MARINE DE LA PESTE ami, ou un agent ennemi qui a un de vos pions de Poison et qui est à 7" d'un agent MARINE DE LA PESTE ami. Jusqu'à la fin de la prochaine activation de l'agent choisi, soustrayez 1 à sa caractéristique de LPA.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subterfuges d'Affrontement -->
+        <div>
+          <div class="ploy-group-title fight-title">Subterfuges d'Affrontement</div>
+          <div class="ploy-list">
+            <div class="ploy-item fight">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Poison virulent</div>
+                <p>Utilisez ce subterfuge d'affrontement pendant l'activation ou la contre-attaque d'un agent MARINE DE LA PESTE ami, avant ou après qu'il a accompli une action. Un agent ennemi à 3" de cet agent, ou visible par et à 7" de cet agent, gagne un de vos pions de Poison (s'il n'en a pas déjà un).</p>
+              </div>
+            </div>
+            <div class="ploy-item fight">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Mort virulente</div>
+                <p>Utilisez ce subterfuge d'affrontement quand un agent MARINE DE LA PESTE ami est neutralisé, avant de le retirer de la killzone. Chaque agent ennemi à 3" et visible de cet agent gagne un de vos pions de Poison (s'il n'en avait pas déjà un) ; pour chacun de ces agents ennemis qui avait déjà un de vos pions de Poison (dont ceux qui en ont gagné un au cours de cette action), infligez-lui 1 dégât à la place.</p>
+              </div>
+            </div>
+            <div class="ploy-item fight">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Résistance écœurante</div>
+                <p>Utilisez ce subterfuge d'affrontement quand un dé d'attaque inflige des dégâts à un agent MARINE DE LA PESTE ami. Jusqu'à la fin de l'activation ou de la contre-attaque, au regard de la règle Affreusement Résistant pour cet agent, soustrayez toujours 1 aux dégâts infligés (jusqu'à un minimum de 2) ; vous n'avez pas à faire de jet.</p>
+              </div>
+            </div>
+            <div class="ploy-item fight">
+              <div class="ploy-pip">
+                <span class="pip-cost">1</span>
+                <span class="pip-label">PC</span>
+              </div>
+              <div class="ploy-text">
+                <div class="ploy-name">Malédiction pourrissante</div>
+                <p>Utilisez ce subterfuge d'affrontement quand un agent MARINE DE LA PESTE combat contre ou tire sur un agent ennemi à 3" de lui (ou à 7" de lui si cet agent ennemi a un de vos pions de Poison), après que votre adversaire a jeté ses dés d'attaque ou de défense. Pour chaque résultat de 3 qu'il obtient, infligez 1 dégât à cet agent ennemi, ce résultat ne peut pas être conservé comme une réussite et ne peut pas être relancé.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operatives -->
+  <div class="section">
+    <div class="sec-title">Agents</div>
+    <div class="ops-grid">
+
+      <!-- Champion Marine de la Peste -->
+      <div class="op leader">
+        <div class="op-head">
+          <span class="op-name">Champion Marine de la Peste</span>
+          <div class="op-meta">
+            <span class="leader-badge">Chef</span>
+          </div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">15</span></div>
+        </div>
+        <table class="wt">
+          <thead>
+            <tr>
+              <th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Pistolet à plasma (standard)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/5</td>
+              <td class="wr">Perforante 1, Portée 8"</td>
+            </tr>
+            <tr>
+              <td><span class="wn">Pistolet à plasma (surcharge)</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>4/5</td>
+              <td class="wr">Létale 5+, Perforante 1, Portée 8", Surchauffe</td>
+            </tr>
+            <tr>
+              <td><span class="wn">Épée de la peste</span><span class="rt rt-m">MEL</span></td>
+              <td>5</td><td>3+</td><td>4/5</td>
+              <td class="wr">Fatale, Poison*, Toxique*</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Bénédiction du Grand-Père</span>
+            </div>
+            <p>Quand un agent ennemi qui a un de vos pions de Poison perd un ou plusieurs points de vie à 7" de cet agent, cet agent regagne autant de points de vie perdus (avec un maximum de 3 points de vie perdus par tournant, et seulement si cet agent n'est pas neutralisé).</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Toxique</span>
+            </div>
+            <p>Quand cet agent utilise cette arme contre un agent ennemi qui a un de vos pions de Poison, ajoutez 1 aux deux caractéristiques de Dégâts de cette arme.</p>
+          </div>
+        </div>
+        <div class="keywords"></div>
+      </div>
+
+      <!-- Essaimeur Répugnant -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Essaimeur Répugnant</span>
+          <div class="op-meta"></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead>
+            <tr>
+              <th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Entropie</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/7</td>
+              <td class="wr">Fatale, Portée 7", PSYCHIQUE, Saturation, Poison*</td>
+            </tr>
+            <tr>
+              <td><span class="wn">Vent de peste</span><span class="rt rt-r">TIR</span></td>
+              <td>6</td><td>3+</td><td>2/3</td>
+              <td class="wr">Fatale, PSYCHIQUE, Saturation, Torrent 1", Poison*</td>
+            </tr>
+            <tr>
+              <td><span class="wn">Bâton corrompu</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td class="wr">Choc, Étourdissante, Fatale, PSYCHIQUE, Poison*</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Miasmes empoisonnés</span>
+              <span class="ab-cost">1 PA</span>
+              <span class="ab-tag">PSYCHIQUE</span>
+            </div>
+            <p>Choisissez un agent ennemi visible de cet agent et à 7" de lui, ou un agent ennemi qui est une cible éligible pour cet agent. L'agent ennemi gagne un de vos pions de Poison (s'il n'en a pas déjà un). S'il en a déjà un, infligez 3 dégâts à cet agent ennemi à la place. Un agent ne peut pas effectuer cette action tant qu'il est à portée de contrôle d'un agent ennemi.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Vitalité putrescente</span>
+              <span class="ab-cost">1 PA</span>
+              <span class="ab-tag">PSYCHIQUE</span>
+            </div>
+            <p>Choisissez un agent ami visible de cet agent et à 3" de lui, puis jetez 2D6 : si le résultat est 7, l'agent choisi regagne 7 points de vie perdus ; sinon, l'agent choisi regagne un nombre de points de vie égal au plus haut résultat des D6. Un agent ne peut pas effectuer cette action tant qu'il est à portée de contrôle d'un agent ennemi, ou plus d'une fois par tournant.</p>
+          </div>
+        </div>
+        <div class="keywords"></div>
+      </div>
+
+      <!-- Bombardier -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Bombardier</span>
+          <div class="op-meta"></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead>
+            <tr>
+              <th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Bolter</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td class="wr">—</td>
+            </tr>
+            <tr>
+              <td><span class="wn">Poings</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td class="wr">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Grenadier</span>
+            </div>
+            <p>Cet agent peut utiliser des grenades buboniques et Krak. Cela ne compte pas dans les utilisations limitées que vous avez. Quand cet agent utilise une grenade bubonique ou Krak, améliorez la caractéristique de Touche de cette arme de 1 et les grenades buboniques ont la règle Toxique.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Toxique</span>
+            </div>
+            <p>Quand cet agent utilise cette arme contre un agent ennemi qui a un de vos pions de Poison, ajoutez 1 aux deux caractéristiques de Dégâts de cette arme.</p>
+          </div>
+        </div>
+        <div class="keywords"></div>
+      </div>
+
+      <!-- Combattant -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Combattant</span>
+          <div class="op-meta"></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead>
+            <tr>
+              <th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Fléau de Corruption</span><span class="rt rt-m">MEL</span></td>
+              <td>5</td><td>3+</td><td>4/5</td>
+              <td class="wr">Brutale, Choc, Fatale, Poison*</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Fléau</span>
+              <span class="ab-cost">1 PA</span>
+            </div>
+            <p>Infligez D3+2 dégâts à chaque agent à la fois à 2" et visible de cet agent. Faites un jet séparé pour chacun : si c'est un agent ennemi, sur un résultat de 3 sur le D3, cet agent ennemi gagne également un de vos pions de Poison (s'il n'en a pas déjà un). Concernant les restrictions des actions et la règle de faction Astartes, cette action compte comme une action Combattre. Cet agent ne peut pas effectuer cette action tant qu'il a un ordre de Dissimulation.</p>
+          </div>
+        </div>
+        <div class="keywords"></div>
+      </div>
+
+      <!-- Tireur Lourd -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Tireur Lourd</span>
+          <div class="op-meta"></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead>
+            <tr>
+              <th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Gerbe-peste</span><span class="rt rt-r">TIR</span></td>
+              <td>5</td><td>2+</td><td>3/3</td>
+              <td class="wr">Fatale, Portée 7", Saturation, Torrent 2", Poison*</td>
+            </tr>
+            <tr>
+              <td><span class="wn">Poings</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td class="wr">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="keywords"></div>
+      </div>
+
+      <!-- Porte-Icône -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Porte-Icône</span>
+          <div class="op-meta"></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead>
+            <tr>
+              <th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Pistolet bolter</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td class="wr">Portée 8"</td>
+            </tr>
+            <tr>
+              <td><span class="wn">Couteau de la peste</span><span class="rt rt-m">MEL</span></td>
+              <td>5</td><td>3+</td><td>3/4</td>
+              <td class="wr">Fatale, Poison*</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Icône de contagion</span>
+            </div>
+            <p>Quand cet agent est dans le territoire adverse, le subterfuge stratégique Contagion vous coûte 0 PC.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Porte-icône</span>
+            </div>
+            <p>Quand vous déterminez le contrôle d'un marqueur, traitez la LPA de cet agent comme supérieure de 1. Notez qu'il ne s'agit pas d'une modification de sa LPA, d'autres modifications peuvent donc se cumuler avec cette règle.</p>
+          </div>
+        </div>
+        <div class="keywords"></div>
+      </div>
+
+      <!-- Guerrier -->
+      <div class="op">
+        <div class="op-head">
+          <span class="op-name">Guerrier</span>
+          <div class="op-meta"></div>
+        </div>
+        <div class="stat-bar">
+          <div class="sc"><span class="sl">LPA</span><span class="sv">3</span></div>
+          <div class="sc"><span class="sl">M</span><span class="sv">5"</span></div>
+          <div class="sc"><span class="sl">SVG</span><span class="sv">3+</span></div>
+          <div class="sc"><span class="sl">PV</span><span class="sv">14</span></div>
+        </div>
+        <table class="wt">
+          <thead>
+            <tr>
+              <th>Arme</th><th>A</th><th>T</th><th>D/DC</th><th>Règles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="wn">Bolter</span><span class="rt rt-r">TIR</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td class="wr">Toxique*</td>
+            </tr>
+            <tr>
+              <td><span class="wn">Couteau de la peste</span><span class="rt rt-m">MEL</span></td>
+              <td>4</td><td>3+</td><td>3/4</td>
+              <td class="wr">Fatale, Poison*</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="abilities">
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Résistance répugnante</span>
+            </div>
+            <p>Quand un agent tire sur cet agent, les résultats de dés de défense de 5+ sont des réussites critiques.</p>
+          </div>
+          <div class="ab">
+            <div class="ab-head">
+              <span class="ab-name">Toxique</span>
+            </div>
+            <p>Quand cet agent utilise cette arme contre un agent ennemi qui a un de vos pions de Poison, ajoutez 1 aux deux caractéristiques de Dégâts de cette arme.</p>
+          </div>
+        </div>
+        <div class="keywords"></div>
+      </div>
+
+    </div><!-- /ops-grid -->
+  </div><!-- /section operatives -->
+
+  <!-- Equipment -->
+  <div class="section">
+    <div class="sec-title">Équipement de faction</div>
+    <div class="equip-grid">
+      <div class="eq">
+        <div class="eq-name">Cloches de la Peste</div>
+        <p>Vous pouvez ignorer les modifications aux caractéristiques des agents MARINE DE LA PESTE amis dues au fait d'être estropiés (y compris les caractéristiques de leurs armes).</p>
+      </div>
+      <div class="eq">
+        <div class="eq-name">Grenades buboniques</div>
+        <p>Les agents MARINE DE LA PESTE amis ont l'arme de tir suivante (vous ne pouvez pas choisir de l'utiliser plus de deux fois au cours de la bataille) : <b>Grenade bubonique</b> | A 4 | CT 4+ | D 2/4 | Déflagration 2", Fatale, Portée 6", Saturation, Poison*</p>
+      </div>
+      <div class="eq">
+        <div class="eq-name">Balles buboniques</div>
+        <p>Les bolters et pistolets bolters des agents MARINE DE LA PESTE amis ont les règles Poison et Fatale.</p>
+      </div>
+      <div class="eq">
+        <div class="eq-name">Évents pestilentiels</div>
+        <p>Quand un agent ennemi qui n'a pas un de vos pions de Poison est activé à 3" d'un agent MARINE DE LA PESTE ami, jetez un D3 : sur 3, l'agent ennemi gagne un de vos pions de Poison.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<footer>
+  Marines de la Peste &middot; Kill Team 2024 &middot; Source&nbsp;: kt.wargamebuilder.com/fr/killteam/view/60
+</footer>
+
+</body>
+</html>
