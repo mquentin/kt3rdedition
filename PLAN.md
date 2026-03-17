@@ -238,3 +238,32 @@ Also update the **footer** of the faction HTML file to include the exact source 
 ```
 
 This allows future updates to be traced back to their source directly from the printed sheet.
+
+---
+
+## Step 7 — Verify the non-negotiable constraints
+
+Before considering the faction sheet done, check both constraints explicitly.
+
+### Constraint 1 — Fits on one A4 landscape page
+
+Open the HTML file in a browser and trigger print preview (`Ctrl+P` / `Cmd+P`):
+
+- Set paper size to **A4**, orientation **Landscape**
+- Set margins to **Custom** matching the `@page` values (`8mm` top/bottom, `10mm` left/right)
+- Disable headers and footers (browser-added ones, not the page footer)
+- Confirm the page count is **exactly 1**
+
+If it overflows: reduce font sizes, padding, or gaps in `@media print` — do not remove content.
+
+### Constraint 2 — Exact wording from the source
+
+Open the source URL (`kt.wargamebuilder.com/fr/killteam/view/[ID]`) side by side with the HTML file and verify:
+
+- Every rule name matches exactly
+- Every rule, ability, ploy, and equipment description is copied verbatim — no paraphrasing
+- Every weapon row (A, T, D/DC, Règles) matches the source exactly
+- `Portée X"` appears in the Règles column **only** where the source lists it — never invented
+- No content from the source is missing (all operatives, all ploys, all equipment)
+
+Do not ship the sheet if either constraint is not met.
