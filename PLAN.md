@@ -109,44 +109,67 @@ Light theme:
 
 The goal is to fit the entire faction on **one A4 landscape page**.
 
-Add at the end of the `<style>` block:
-
 ```css
-@page { size: landscape; margin: 8mm 8mm; }
+@page { size: landscape; margin: 8mm 12mm; }
 
 @media print {
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  body { font-size: 7.5px; background: #fff; }
-  .page { padding: 4px 0 0; max-width: 100%; }
+  body { font-size: 7px; background: #fff; line-height: 1.15; }
+  .page { padding: 3px 0 0; max-width: 100%; }
 }
 ```
+
+Use `margin: 8mm 12mm` (top/bottom 8mm, left/right 12mm) — most printers have a ~10mm unprintable border on the sides.
 
 ### Layout changes in print
 
 | Section | Screen layout | Print layout |
 |---|---|---|
-| Header | full padding | 4px padding, h1 13px |
-| Top row | 1fr / 1.6fr | same, gap 6px |
-| Ploys | 2 cols, 4 items stacked each | 2 cols, **each list becomes 2×2 grid** |
-| Operatives | auto-fill ~340px | **repeat(4, 1fr)** |
+| Header | full padding | single flex line, h1 11px, 2px padding |
+| Info band | top-row (2 cols) + ploys (2 cols) stacked | **4-col horizontal band** |
+| Operatives | auto-fill ~340px | **repeat(4, 1fr)**, gap 3px |
 | Equipment | auto-fill ~240px | **repeat(4, 1fr)** |
 
-The critical trick for fitting vertically is the **ploy 2×2 grid**:
+### Critical trick — 4-column info band
+
+Wrap the top-row div and the ploys section div in a single `<div class="info-band">`. In print, use `display: contents` on the children so their children become direct grid items:
+
 ```css
-.ploy-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
+.info-band { display: grid; grid-template-columns: 1fr 2.2fr 1.6fr 1.6fr; gap: 4px; align-items: start; margin-bottom: 4px; }
+.top-row, .ploys-section, .ploys-row { display: contents; }
 ```
-This halves the ploy section height (2 rows instead of 4 per group).
+
+This places composition, faction rules, strategic ploys, and firefight ploys **side by side** in one row instead of two stacked rows — the single biggest height saving.
+
+The four columns are:
+1. Composition box
+2. Faction rules (internally still a 2-col grid)
+3. Subterfuges Stratégiques (4 ploys stacked)
+4. Subterfuges d'Affrontement (4 ploys stacked)
+
+### Other tricks for fitting vertically
+
+**Hide ploy group titles** — pip colour already distinguishes strategy (blue) vs firefight (red):
+```css
+.ploy-group-title { display: none; }
+```
+
+**Hide weapon table headers** — A / T / D/DC / Règles is self-evident after one read:
+```css
+table.wt thead { display: none; }
+```
 
 ### Font and spacing targets
 
 | Element | Print size |
 |---|---|
-| Body base | 7.5px |
-| Ploy / ability text | 7px |
-| Weapon table | 7.5px |
-| Table headers | 6.5px |
-| Labels (stat bar, badges) | 6–6.5px |
-| All padding | 1–4px |
+| Body base | 7px |
+| Rules / box body | 6.5px |
+| Ploy / ability text | 6px |
+| Weapon table | 6.5px |
+| Labels (stat bar, badges) | 5.5–6px |
+| Line-height | 1.15 |
+| All padding | 1–3px |
 
 ### Break rules
 ```css
@@ -160,9 +183,11 @@ This halves the ploy section height (2 rows instead of 4 per group).
 | Class | Role |
 |---|---|
 | `header` | Top bar (accent bg) |
-| `top-row` | 2-col grid for composition + rules |
+| `info-band` | Wrapper for top-row + ploys (screen: block; print: 4-col grid) |
+| `top-row` | 2-col grid for composition + rules (screen only; `display:contents` in print) |
 | `rules-grid` | 2-col grid inside faction rules |
-| `ploys-row` | 2-col grid for strategy vs firefight |
+| `ploys-section` | Wrapper div around ploys-row (`display:contents` in print) |
+| `ploys-row` | 2-col grid for strategy vs firefight (screen only; `display:contents` in print) |
 | `ploy-item.strat` / `.fight` | Blue or red left pip |
 | `ops-grid` | Auto-fill card grid |
 | `op` / `op.leader` | Operative card (gold border for leader) |
