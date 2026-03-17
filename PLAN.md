@@ -137,8 +137,30 @@ Use `margin: 8mm 10mm` (top/bottom 8mm, left/right 10mm) — most modern printer
 |---|---|---|
 | Header | full padding | single flex line, h1 11px, 2px padding |
 | Info band | top-row (2 cols) + ploys (2 cols) stacked | **4-col horizontal band** |
-| Operatives | auto-fill ~340px | **repeat(4, 1fr)**, gap 3px |
+| Operatives (≤8) | auto-fill ~340px | **repeat(4, 1fr)**, gap 3px |
+| Operatives (9–12) | auto-fill ~340px | **repeat(6, 1fr)**, gap 2px — see Large roster below |
 | Equipment | auto-fill ~240px | **repeat(4, 1fr)** |
+
+### Large roster strategy (9+ operatives)
+
+When a faction has more than 8 operatives, 4 columns = 3+ rows which overflows the page. Switch to 6 columns to stay at 2 rows, and tighten all print sizes:
+
+```css
+/* Large roster override — 6 cols keeps 11 ops in 2 rows */
+.ops-grid { grid-template-columns: repeat(6, 1fr); gap: 2px; }
+body { font-size: 6.5px; line-height: 1.1; }
+.sv { font-size: 7px; }
+.op-name { font-size: 5.5px; }
+table.wt { font-size: 6px; }
+table.wt td { padding: 1px 2px; }
+.ab p, .ab ul li { font-size: 5.5px; line-height: 1.1; }
+.ploy-text p { font-size: 5.5px; }
+/* Reduce info-band gap and padding to compensate for tighter body font */
+.info-band { gap: 3px; margin-bottom: 3px; }
+.section { margin-bottom: 3px; }
+```
+
+**Rule of thumb:** count total operatives before writing. If > 8, use the large-roster CSS block from the start.
 
 ### Critical trick — 4-column info band
 
