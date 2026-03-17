@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kill Team 3rd Edition — Références</title>
+  <style>
+    :root {
+      --bg:      #f4f2ee;
+      --bg2:     #ffffff;
+      --bg3:     #eeece8;
+      --border:  #d4d0cb;
+      --text:    #1c1a16;
+      --dim:     #6a6258;
+      --accent:  #2e1a5e;
+      --accent2: #5c3a96;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 24px 32px 20px;
+      border-bottom: 3px solid var(--accent2);
+    }
+
+    header h1 {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    header p {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .sec-title {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 4px;
+      margin-bottom: 16px;
+    }
+
+    .faction-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .faction-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent2);
+      text-decoration: none;
+      color: inherit;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-top-color 0.15s, box-shadow 0.15s;
+    }
+
+    .faction-card:hover {
+      border-top-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(46,26,94,0.12);
+    }
+
+    .faction-name {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .faction-sub {
+      font-size: 11px;
+      color: var(--dim);
+      letter-spacing: 0.5px;
+    }
+
+    .faction-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .ftag {
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: var(--bg3);
+      color: var(--dim);
+      padding: 1px 6px;
+      border: 1px solid var(--border);
+    }
+
+    footer {
+      text-align: center;
+      padding: 14px;
+      color: var(--dim);
+      font-size: 10px;
+      border-top: 1px solid var(--border);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Kill Team 3rd Edition</h1>
+  <p>Fiches de référence · Impression paysage</p>
+</header>
+
+<main>
+  <div class="sec-title">Factions disponibles</div>
+  <div class="faction-grid">
+
+    <a class="faction-card" href="nemesis-claw.html">
+      <span class="faction-name">Griffe Némésis</span>
+      <span class="faction-sub">Night Lords · VIII Légion</span>
+      <div class="faction-tags">
+        <span class="ftag">Chaos</span>
+        <span class="ftag">Hereticus Astartes</span>
+      </div>
+    </a>
+
+    <!-- Add new faction cards here -->
+
+  </div>
+</main>
+
+<footer>Kill Team 2024 · Source : kt.wargamebuilder.com</footer>
+
+</body>
+</html>
