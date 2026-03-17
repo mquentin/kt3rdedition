@@ -198,13 +198,13 @@
       /* Preserve all colours and backgrounds */
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-      body { font-size: 7.5px; background: #fff; line-height: 1.2; }
+      body { font-size: 7px; background: #fff; line-height: 1.15; }
 
       /* Single-line header */
-      header { padding: 3px 10px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid var(--accent2); }
-      header h1 { font-size: 12px; }
-      .header-sub { font-size: 7px; margin-top: 0; }
-      .tag { font-size: 6.5px; padding: 1px 4px; }
+      header { padding: 2px 8px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--accent2); }
+      header h1 { font-size: 11px; }
+      .header-sub { font-size: 6.5px; margin-top: 0; }
+      .tag { font-size: 6px; padding: 1px 3px; }
 
       .page { padding: 3px 0 0; max-width: 100%; }
       .section { margin-bottom: 4px; }
@@ -214,12 +214,12 @@
       .top-row, .ploys-section, .ploys-row { display: contents; }
 
       /* Composition + faction rules */
-      .box-title { padding: 2px 6px; font-size: 6.5px; }
-      .box-body { padding: 3px 6px; font-size: 7px; line-height: 1.2; }
-      .rule-cell { padding: 3px 6px; }
-      .rule-name { font-size: 7px; margin-bottom: 1px; }
-      .rule-cell p { font-size: 7px; line-height: 1.2; padding-left: 6px; }
-      .sec-title { font-size: 6.5px; margin-bottom: 3px; padding-bottom: 2px; }
+      .box-title { padding: 1px 5px; font-size: 6px; }
+      .box-body { padding: 2px 5px; font-size: 6.5px; line-height: 1.15; }
+      .rule-cell { padding: 2px 5px; }
+      .rule-name { font-size: 6.5px; margin-bottom: 1px; }
+      .rule-cell p { font-size: 6.5px; line-height: 1.15; padding-left: 5px; }
+      .sec-title { font-size: 6px; margin-bottom: 2px; padding-bottom: 1px; }
       .rules-grid { grid-template-columns: 1fr 1fr; }
 
       /* Ploys: each group is its own column — group titles hidden (pip colour distinguishes) */
@@ -229,36 +229,36 @@
       .ploy-pip { padding: 3px 2px; }
       .pip-cost { font-size: 9px; }
       .pip-label { font-size: 6px; }
-      .ploy-text { padding: 2px 5px; }
-      .ploy-name { font-size: 7px; margin-bottom: 1px; }
-      .ploy-text p { font-size: 6.5px; line-height: 1.2; padding-left: 5px; }
+      .ploy-text { padding: 2px 4px; }
+      .ploy-name { font-size: 6.5px; margin-bottom: 1px; }
+      .ploy-text p { font-size: 6px; line-height: 1.15; padding-left: 4px; }
 
       /* Operatives: 4 columns, weapon thead hidden (A/T/D/Règles is self-evident) */
-      .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; }
-      .op-head { padding: 2px 5px; }
-      .op-name { font-size: 7px; }
-      .leader-badge { font-size: 6px; padding: 1px 3px; }
-      .sl { font-size: 6px; }
-      .sv { font-size: 9px; }
+      .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 3px; }
+      .op-head { padding: 2px 4px; }
+      .op-name { font-size: 6.5px; }
+      .leader-badge { font-size: 5.5px; padding: 0 2px; }
+      .sl { font-size: 5.5px; }
+      .sv { font-size: 8px; }
       .sc { padding: 1px 2px; }
-      table.wt { font-size: 7px; }
+      table.wt { font-size: 6.5px; }
       table.wt thead { display: none; }
-      table.wt td { padding: 1px 4px; }
-      .wr { font-size: 6.5px; }
-      .rt { font-size: 6px; padding: 0 2px; }
-      .abilities { padding: 2px 5px; gap: 2px; }
+      table.wt td { padding: 1px 3px; }
+      .wr { font-size: 6px; }
+      .rt { font-size: 5.5px; padding: 0 2px; }
+      .abilities { padding: 2px 4px; gap: 1px; }
       .ab-head { margin-bottom: 1px; }
-      .ab-name { font-size: 7px; }
-      .ab p { font-size: 6.5px; line-height: 1.2; padding-left: 5px; }
-      .ab ul { margin-left: 5px; }
-      .ab ul li { font-size: 6.5px; line-height: 1.2; }
-      .ab-cost, .ab-tag { font-size: 6px; padding: 0 3px; }
+      .ab-name { font-size: 6.5px; }
+      .ab p { font-size: 6px; line-height: 1.15; padding-left: 4px; }
+      .ab ul { margin-left: 4px; }
+      .ab ul li { font-size: 6px; line-height: 1.15; }
+      .ab-cost, .ab-tag { font-size: 5.5px; padding: 0 2px; }
 
       /* Equipment: 4 columns */
       .equip-grid { grid-template-columns: repeat(4, 1fr); }
-      .eq { padding: 3px 5px; border-top-width: 2px; }
-      .eq-name { font-size: 7px; margin-bottom: 2px; }
-      .eq p { font-size: 6.5px; line-height: 1.2; }
+      .eq { padding: 2px 4px; border-top-width: 2px; }
+      .eq-name { font-size: 6.5px; margin-bottom: 1px; }
+      .eq p { font-size: 6px; line-height: 1.15; }
 
       footer { padding: 2px; font-size: 6.5px; }
 
