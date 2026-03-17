@@ -88,6 +88,8 @@ table.wt td:not(:first-child) { text-align: center; }
 .eq-name { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
 .eq p { font-size: 11px; color: var(--dim); line-height: 1.5; padding-left: 10px; }
 .eq p b { color: var(--text); }
+.eq-list { margin: 3px 0 0 10px; padding-left: 12px; }
+.eq-list li { font-size: 11px; color: var(--dim); line-height: 1.5; }
 footer { text-align: center; padding: 12px; color: var(--dim); font-size: 10px; border-top: 1px solid var(--border); letter-spacing: 1px; }
 
 @page { size: landscape; margin: 8mm 10mm; }
@@ -142,6 +144,8 @@ footer { text-align: center; padding: 12px; color: var(--dim); font-size: 10px; 
   .eq { padding: 2px 3px; border-top-width: 2px; }
   .eq-name { font-size: 6px; margin-bottom: 1px; }
   .eq p { font-size: 5.5px; line-height: 1.1; }
+  .eq-list { margin: 1px 0 0 4px; padding-left: 6px; }
+  .eq-list li { font-size: 5.5px; line-height: 1.1; }
   footer { padding: 2px; font-size: 6px; }
   .op { break-inside: avoid; }
   .ploy-item { break-inside: avoid; }
@@ -769,10 +773,10 @@ footer { text-align: center; padding: 12px; color: var(--dim); font-size: 10px; 
       <div class="eq">
         <div class="eq-name">Brassards bioradars de sanctus-v</div>
         <p>Une fois pendant chaque activation d'un agent <b>DEATHWATCH</b> ami, avant qu'il n'effectue une action ou après qu'il a effectué une action, s'il n'est à portée de contrôle d'aucun agent ennemi, vous pouvez utiliser cette règle. Dans ce cas, choisissez 1 des choses suivantes :</p>
-        <ul style="margin: 4px 0 0 10px; padding-left: 12px;">
-          <li style="font-size:11px;color:var(--dim);line-height:1.5;">L'agent ami récupère D3 PV perdus.</li>
-          <li style="font-size:11px;color:var(--dim);line-height:1.5;">Retirez tout changement à la caractéristique de LPA de cet agent ami.</li>
-          <li style="font-size:11px;color:var(--dim);line-height:1.5;">Retirez un des pions suivants qu'a cet agent ami (avant de résoudre les effets d'activation de ce pion, le cas échéant) : Fragment Neutronique, Poison, Terrochimique.</li>
+        <ul class="eq-list">
+          <li>L'agent ami récupère D3 PV perdus.</li>
+          <li>Retirez tout changement à la caractéristique de LPA de cet agent ami.</li>
+          <li>Retirez un des pions suivants qu'a cet agent ami (avant de résoudre les effets d'activation de ce pion, le cas échéant) : Fragment Neutronique, Poison, Terrochimique.</li>
         </ul>
       </div>
 
