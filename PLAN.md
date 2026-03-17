@@ -110,7 +110,7 @@ Light theme:
 The goal is to fit the entire faction on **one A4 landscape page**.
 
 ```css
-@page { size: landscape; margin: 8mm 12mm; }
+@page { size: landscape; margin: 8mm 10mm; }
 
 @media print {
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -119,7 +119,7 @@ The goal is to fit the entire faction on **one A4 landscape page**.
 }
 ```
 
-Use `margin: 8mm 12mm` (top/bottom 8mm, left/right 12mm) — most printers have a ~10mm unprintable border on the sides.
+Use `margin: 8mm 10mm` (top/bottom 8mm, left/right 10mm) — most modern printers (inkjet and laser) require only 3–6mm minimum, so 10mm covers virtually all printers including older office lasers.
 
 ### Layout changes in print
 
