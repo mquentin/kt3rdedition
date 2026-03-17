@@ -198,64 +198,69 @@
       /* Preserve all colours and backgrounds */
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-      body { font-size: 7.5px; background: #fff; }
+      body { font-size: 7.5px; background: #fff; line-height: 1.2; }
 
-      header { padding: 4px 10px; border-bottom: 2px solid var(--accent2); }
-      header h1 { font-size: 13px; }
-      .header-sub { font-size: 7px; }
-      .tag { font-size: 7px; padding: 1px 5px; }
+      /* Single-line header */
+      header { padding: 3px 10px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid var(--accent2); }
+      header h1 { font-size: 12px; }
+      .header-sub { font-size: 7px; margin-top: 0; }
+      .tag { font-size: 6.5px; padding: 1px 4px; }
 
-      .page { padding: 4px 0 0; max-width: 100%; }
-      .top-row { grid-template-columns: 1fr 1.6fr; gap: 6px; margin-bottom: 5px; }
-      .section { margin-bottom: 5px; }
+      .page { padding: 3px 0 0; max-width: 100%; }
+      .section { margin-bottom: 4px; }
+
+      /* Info band: composition | rules | strat ploys | fight ploys → 4 horizontal columns */
+      .info-band { display: grid; grid-template-columns: 1fr 2.2fr 1.6fr 1.6fr; gap: 4px; margin-bottom: 4px; align-items: start; }
+      .top-row, .ploys-section, .ploys-row { display: contents; }
 
       /* Composition + faction rules */
-      .box-body { padding: 3px 6px; font-size: 7.5px; }
+      .box-title { padding: 2px 6px; font-size: 6.5px; }
+      .box-body { padding: 3px 6px; font-size: 7px; line-height: 1.2; }
       .rule-cell { padding: 3px 6px; }
-      .rule-name { font-size: 7.5px; margin-bottom: 2px; }
-      .rule-cell p { font-size: 7px; line-height: 1.35; padding-left: 6px; }
-      .sec-title { font-size: 7px; margin-bottom: 4px; }
+      .rule-name { font-size: 7px; margin-bottom: 1px; }
+      .rule-cell p { font-size: 7px; line-height: 1.2; padding-left: 6px; }
+      .sec-title { font-size: 6.5px; margin-bottom: 3px; padding-bottom: 2px; }
+      .rules-grid { grid-template-columns: 1fr 1fr; }
 
-      /* Ploys: each group becomes a 2×2 grid, halving section height */
-      .ploys-row { grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 5px; }
-      .ploy-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
-      .ploy-group-title { font-size: 7px; padding: 3px 6px; }
-      .ploy-item { grid-template-columns: 32px 1fr; }
-      .ploy-pip { padding: 4px 2px; }
-      .pip-cost { font-size: 10px; }
+      /* Ploys: each group is its own column — group titles hidden (pip colour distinguishes) */
+      .ploy-group-title { display: none; }
+      .ploy-list { display: flex; flex-direction: column; gap: 1px; }
+      .ploy-item { grid-template-columns: 28px 1fr; }
+      .ploy-pip { padding: 3px 2px; }
+      .pip-cost { font-size: 9px; }
       .pip-label { font-size: 6px; }
-      .ploy-text { padding: 3px 6px; }
-      .ploy-name { font-size: 7.5px; margin-bottom: 1px; }
-      .ploy-text p { font-size: 7px; line-height: 1.35; padding-left: 6px; }
+      .ploy-text { padding: 2px 5px; }
+      .ploy-name { font-size: 7px; margin-bottom: 1px; }
+      .ploy-text p { font-size: 6.5px; line-height: 1.2; padding-left: 5px; }
 
-      /* Operatives: 4 columns */
-      .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 5px; }
-      .op-head { padding: 3px 6px; }
-      .op-name { font-size: 7.5px; }
-      .leader-badge { font-size: 6px; padding: 1px 4px; }
+      /* Operatives: 4 columns, weapon thead hidden (A/T/D/Règles is self-evident) */
+      .ops-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+      .op-head { padding: 2px 5px; }
+      .op-name { font-size: 7px; }
+      .leader-badge { font-size: 6px; padding: 1px 3px; }
       .sl { font-size: 6px; }
-      .sv { font-size: 10px; }
-      .sc { padding: 2px 2px; }
-      table.wt { font-size: 7.5px; }
-      table.wt th { font-size: 6.5px; padding: 2px 4px 1px; }
+      .sv { font-size: 9px; }
+      .sc { padding: 1px 2px; }
+      table.wt { font-size: 7px; }
+      table.wt thead { display: none; }
       table.wt td { padding: 1px 4px; }
-      .wr { font-size: 7px; }
-      .rt { font-size: 6.5px; }
-      .abilities { padding: 3px 6px; gap: 2px; }
+      .wr { font-size: 6.5px; }
+      .rt { font-size: 6px; padding: 0 2px; }
+      .abilities { padding: 2px 5px; gap: 2px; }
       .ab-head { margin-bottom: 1px; }
-      .ab-name { font-size: 7.5px; }
-      .ab p { font-size: 7px; line-height: 1.35; padding-left: 6px; }
-      .ab ul { margin-left: 6px; }
-      .ab ul li { font-size: 7px; line-height: 1.35; }
-      .ab-cost, .ab-tag { font-size: 6.5px; padding: 0 3px; }
+      .ab-name { font-size: 7px; }
+      .ab p { font-size: 6.5px; line-height: 1.2; padding-left: 5px; }
+      .ab ul { margin-left: 5px; }
+      .ab ul li { font-size: 6.5px; line-height: 1.2; }
+      .ab-cost, .ab-tag { font-size: 6px; padding: 0 3px; }
 
       /* Equipment: 4 columns */
       .equip-grid { grid-template-columns: repeat(4, 1fr); }
-      .eq { padding: 4px 6px; border-top-width: 2px; }
-      .eq-name { font-size: 7.5px; margin-bottom: 2px; }
-      .eq p { font-size: 7px; line-height: 1.35; }
+      .eq { padding: 3px 5px; border-top-width: 2px; }
+      .eq-name { font-size: 7px; margin-bottom: 2px; }
+      .eq p { font-size: 6.5px; line-height: 1.2; }
 
-      footer { padding: 3px; font-size: 7px; }
+      footer { padding: 2px; font-size: 6.5px; }
 
       /* Prevent cards splitting across pages if content overflows */
       .op { break-inside: avoid; }
@@ -281,7 +286,8 @@
 
 <div class="page">
 
-  <!-- Composition + Faction Rules -->
+  <!-- Info band: Composition + Faction Rules + Ploys in one row (print: 4 columns) -->
+  <div class="info-band">
   <div class="top-row">
 
     <div class="box">
@@ -310,7 +316,7 @@
   </div>
 
   <!-- Ploys -->
-  <div class="section">
+  <div class="section ploys-section">
     <div class="ploys-row">
 
       <div class="ploy-group">
@@ -393,6 +399,7 @@
 
     </div>
   </div>
+  </div><!-- end info-band -->
 
   <!-- Operatives -->
   <div class="section">
